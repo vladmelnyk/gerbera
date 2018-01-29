@@ -20,7 +20,7 @@ Generated transaction hex may be later broadcast via online services (e.g. [Bloc
     * Command line application
     
 ## Help
-* [Where to find unspent outputs to fill TransactionBuilder.from() method arguments](https://github.com/aafomin/gerbera/wiki/Where-to-find-unspent-outputs-to-fill-TransactionBuilder.from()-method-arguments%3F)
+* [Where to find unspent outputs to fill transaction inputs](https://github.com/aafomin/gerbera/wiki/Where-to-find-unspent-outputs-to-fill-transaction-inputs%3F)
 
 ## Quick examples
 ### Build multiple-outputs transaction
