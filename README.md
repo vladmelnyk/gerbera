@@ -1,4 +1,4 @@
-## Gerbera [![Build Status](https://travis-ci.org/aafomin/gerbera.svg?branch=master)](https://travis-ci.org/aafomin/gerbera)
+# Gerbera [![Build Status](https://travis-ci.org/aafomin/gerbera.svg?branch=master)](https://travis-ci.org/aafomin/gerbera)
 
 *Gerbera* is a Bitcoin offline transaction builder used to generate a raw hex Bitcoin transaction.
 Generated transaction hex may be later broadcast via online services (e.g. [Blockchain.info Broadcast](https://blockchain.info/ru/pushtx)).
@@ -263,5 +263,5 @@ Add the built jar to your project and start from `sd.fomin.gerbera.transaction.T
 
 #### Command line tool
 ```sh
-$ java -jar path_to_build_jar/gerbera-VERSION.jar
+$ java -jar path_to_built_jar/gerbera-VERSION.jar
 ```
