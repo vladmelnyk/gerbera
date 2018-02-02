@@ -1,7 +1,7 @@
 # Gerbera [![Build Status](https://travis-ci.org/aafomin/gerbera.svg?branch=master)](https://travis-ci.org/aafomin/gerbera)
 
 *Gerbera* is a Bitcoin offline transaction builder used to generate a raw hex Bitcoin transaction.
-Generated transaction hex may be later broadcast via online services (e.g. [Blockchain.info Broadcast](https://blockchain.info/ru/pushtx)).
+
 
 ## What's Supported
 * Send to:
@@ -23,6 +23,7 @@ Generated transaction hex may be later broadcast via online services (e.g. [Bloc
     
 ## Help
 * [Where to find unspent outputs to fill transaction inputs](https://github.com/aafomin/gerbera/wiki/Where-to-find-unspent-outputs-to-fill-transaction-inputs%3F)
+* [How to broadcast raw transaction to network](https://github.com/aafomin/gerbera/wiki/How-to-broadcast-raw-transaction-to-network)
 
 ## Quick examples
 ### Build multiple-outputs transaction
