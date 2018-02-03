@@ -1,10 +1,12 @@
 package sd.fomin.gerbera.boot.processor;
 
+import sd.fomin.gerbera.boot.processor.annotation.CommandAliases;
 import sd.fomin.gerbera.transaction.TransactionBuilder;
 
 import java.util.Collections;
 import java.util.List;
 
+@CommandAliases("info")
 public class InfoProcessor extends Processor {
 
     @Override

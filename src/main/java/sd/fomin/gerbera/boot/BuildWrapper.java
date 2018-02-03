@@ -34,7 +34,7 @@ public class BuildWrapper {
 
         String commandName = parts.get(0).toLowerCase();
         Processor processor = processors.stream()
-                .filter(p -> commandName.equalsIgnoreCase(p.getCommandName()))
+                .filter(p -> p.supportsCommand(commandName))
                 .findFirst()
                 .orElse(null);
         if (processor == null) {

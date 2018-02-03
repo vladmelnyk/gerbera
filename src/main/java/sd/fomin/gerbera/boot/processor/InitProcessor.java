@@ -1,12 +1,14 @@
 package sd.fomin.gerbera.boot.processor;
 
 import sd.fomin.gerbera.boot.processor.annotation.BuilderNotRequired;
+import sd.fomin.gerbera.boot.processor.annotation.CommandAliases;
 import sd.fomin.gerbera.transaction.TransactionBuilder;
 
 import java.util.Arrays;
 import java.util.List;
 
 @BuilderNotRequired
+@CommandAliases({"init", "create"})
 public class InitProcessor extends Processor {
 
     @Override
