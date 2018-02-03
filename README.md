@@ -24,6 +24,7 @@
 ## Help
 * [Where to find unspent outputs to fill transaction inputs](https://github.com/aafomin/gerbera/wiki/Where-to-find-unspent-outputs-to-fill-transaction-inputs%3F)
 * [How to broadcast raw transaction to network](https://github.com/aafomin/gerbera/wiki/How-to-broadcast-raw-transaction-to-network)
+* [How to use command line tool](https://github.com/aafomin/gerbera/wiki/How-to-use-command-line-tool)
 
 ## Quick examples
 ### Build multiple-outputs transaction
