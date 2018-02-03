@@ -2,8 +2,8 @@ package sd.fomin.gerbera.boot;
 
 import sd.fomin.gerbera.transaction.TransactionBuilder;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class Bootstrap {
 
@@ -13,8 +13,8 @@ public class Bootstrap {
         BuildWrapper buildWrapper = new BuildWrapper();
         Scanner in = new Scanner(System.in);
         String line;
-        System.out.println("Awaiting for command...");
-        while (!"exit".equals(line = in.nextLine())) {
+        printState(buildWrapper.state());
+        while (!"exit".equals(line = readLine(in))) {
             try {
                 buildWrapper.processLine(line);
             } catch (Exception e) {
@@ -33,6 +33,11 @@ public class Bootstrap {
                 builder.append("\n| ").append(l)
         );
         System.out.println(builder);
+    }
+
+    private static String readLine(Scanner in) {
+        System.out.print("\n> ");
+        return in.nextLine();
     }
 
 }

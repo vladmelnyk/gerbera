@@ -20,6 +20,8 @@ public class BuildWrapper {
         add(new RawProcessor());
         add(new SplitProcessor());
         add(new InfoProcessor());
+        add(new RmFromProcessor());
+        add(new RmToProcessor());
     }};
 
     TransactionBuilder builder;

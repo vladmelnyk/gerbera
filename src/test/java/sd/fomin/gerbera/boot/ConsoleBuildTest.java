@@ -45,9 +45,17 @@ public class ConsoleBuildTest {
 
         wrapper.processLine("init mainnet");
         wrapper.processLine("from 3722df3eff476fe31db8ae2b52806379bde58e9289026d10e425adc25c2e3f03 1     76a91491b24bf9f5288532960ac687abb035127b1d28a588ac 20     5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf");
+        wrapper.processLine("rmfrom 1");
+        wrapper.processLine("from fb8212db8c6c0509d1892115b0a73acfc3c30668a0f51dc80758cc479e29e67e 13    76a91491b24bf9f5288532960ac687abb035127b1d28a588ac 4040   5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf");
+        wrapper.processLine("rmfrom 1");
+        wrapper.processLine("from 3722df3eff476fe31db8ae2b52806379bde58e9289026d10e425adc25c2e3f03 1     76a91491b24bf9f5288532960ac687abb035127b1d28a588ac 20     5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf");
         wrapper.processLine("from fb8212db8c6c0509d1892115b0a73acfc3c30668a0f51dc80758cc479e29e67e 13    76a91491b24bf9f5288532960ac687abb035127b1d28a588ac 4040   5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf");
         wrapper.processLine("from 262dc0cba867ba38ec5e92239acbe3074eea3a79105b8e551f60905b1cd79abe 1013  76a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88ac 60880  KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU74NMTptX4");
         wrapper.processLine("from 8b109e31552b7bd3a9c41a30c739eeb0ab90a6ffc92f5a9471e0874acd75e5ba 20025 76a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88ac 400128 KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU74NMTptX4");
+        wrapper.processLine("to 31h38a54tFMrR8kvVig3R23ntQMoitzkAf 50000");
+        wrapper.processLine("to 1JtK9CQw1syfWj1WtFMWomrYdV3W2tWBF9 1300");
+        wrapper.processLine("rmto 2");
+        wrapper.processLine("rmto 1");
         wrapper.processLine("to 1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1 50000");
         wrapper.processLine("to 1JtK9CQw1syfWj1WtFMWomrYdV3W2tWBF9 1300");
         wrapper.processLine("to 31h38a54tFMrR8kvVig3R23ntQMoitzkAf 50000");
@@ -89,14 +97,26 @@ public class ConsoleBuildTest {
         BuildWrapper wrapper = new BuildWrapper();
 
         wrapper.processLine("init testnet");
+        wrapper.processLine("from b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f 1013  76a9141f594f74c37771ef1d3c73317411d84e52ed743188ac 60880  cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
+        wrapper.processLine("rmfrom 1");
         wrapper.processLine("from b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f 1     76a9140af1ae78875d89840db368c013e9938468a493db88ac 20     93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX");
         wrapper.processLine("from b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f 13    76a9140af1ae78875d89840db368c013e9938468a493db88ac 4040   93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX");
+        wrapper.processLine("from 7fa41e3f7f2985eb88be91f7f0257cf6c7522258efa87f10cf883d71e5a65ab9 20025 76a9141f594f74c37771ef1d3c73317411d84e52ed743188ac 400128 cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
+        wrapper.processLine("from b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f 1013  76a9141f594f74c37771ef1d3c73317411d84e52ed743188ac 60880  cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
+        wrapper.processLine("rmfrom 3");
+        wrapper.processLine("rmfrom 3");
         wrapper.processLine("from b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f 1013  76a9141f594f74c37771ef1d3c73317411d84e52ed743188ac 60880  cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
         wrapper.processLine("from 7fa41e3f7f2985eb88be91f7f0257cf6c7522258efa87f10cf883d71e5a65ab9 20025 76a9141f594f74c37771ef1d3c73317411d84e52ed743188ac 400128 cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
+        wrapper.processLine("withfee 40002");
         wrapper.processLine("to muyUrFwhKH8EG7szasDbL1Ytsug9MvgLA4 50000");
+        wrapper.processLine("rmto 1");
+        wrapper.processLine("to muyUrFwhKH8EG7szasDbL1Ytsug9MvgLA4 50000");
+        wrapper.processLine("to 2N8hwP1WmJrFF5QWABn38y63uYLhnJYJYTF 50000");
+        wrapper.processLine("to mpdiUuo7vfU4hGkb2g9n6GPabHiMK3h7uw 1300");
+        wrapper.processLine("rmto 2");
+        wrapper.processLine("rmto 2");
         wrapper.processLine("to mpdiUuo7vfU4hGkb2g9n6GPabHiMK3h7uw 1300");
         wrapper.processLine("to 2N8hwP1WmJrFF5QWABn38y63uYLhnJYJYTF 50000");
-        wrapper.processLine("withfee 40002");
         wrapper.processLine("changeto mwxFsmFviNnxAJngFBovrnvzYP8WMNiogW");
 
         Assert.assertEquals(expectedRaw, wrapper.builder.build().getRawTransaction());
@@ -145,17 +165,23 @@ public class ConsoleBuildTest {
         BuildWrapper wrapper = new BuildWrapper();
 
         wrapper.processLine("init testnet");
+        wrapper.processLine("changeto 2MvrkztsxEdgMGbDSGVeGFx3tbE5Gre8ZtU");
         wrapper.processLine("from bafd902bbb6cc048600f2daac015013aec260b4f25dd1690f3f8d0f9e1c860d9 0 76a9140af1ae78875d89840db368c013e9938468a493db88ac 10000   93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX");
         wrapper.processLine("from 5a0c09d298e45dceafcf3865dfd2d6fe51ee04c7a43fb135faa53d9e5038fe1d 0 76a9141f594f74c37771ef1d3c73317411d84e52ed743188ac 100000  cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
+        wrapper.processLine("from cba852f9bd2e955dfa74b87b6329de443f75f856a22bc5fa8a112267b26ecb82 1 a91456c28fde412e818d21c495ddfa675ef93b3ce3a187     2000000 cRTw5G78cen7w7P2N1jXgr1RtYq6coUjNanzmmpsFkrWU419KgiS");
         wrapper.processLine("from cba852f9bd2e955dfa74b87b6329de443f75f856a22bc5fa8a112267b26ecb82 0 a914587852b3fe1a872ebc3eea917df93d08caad19af87     1000000 cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
         wrapper.processLine("from bafd902bbb6cc048600f2daac015013aec260b4f25dd1690f3f8d0f9e1c860d9 1 76a9149e96150c26d90fb043e3a7bf2690cda1ff6c233388ac 20000   92TwqzoFQwKqF5AXDTuEJBehyzWUZ8MnQ1rqtNwLziexAKG3aTx");
         wrapper.processLine("from 5a0c09d298e45dceafcf3865dfd2d6fe51ee04c7a43fb135faa53d9e5038fe1d 1 76a9146400837067ff8bdc6458e1c7f35267a6acb9f97c88ac 200000  cRTw5G78cen7w7P2N1jXgr1RtYq6coUjNanzmmpsFkrWU419KgiS");
+        wrapper.processLine("rmfrom 3");
         wrapper.processLine("from cba852f9bd2e955dfa74b87b6329de443f75f856a22bc5fa8a112267b26ecb82 1 a91456c28fde412e818d21c495ddfa675ef93b3ce3a187     2000000 cRTw5G78cen7w7P2N1jXgr1RtYq6coUjNanzmmpsFkrWU419KgiS");
+        wrapper.processLine("to mmcgtfjqG1sMvZjzEupfufSqehgzngcqFo 98765");
         wrapper.processLine("to n4qz9ie8g7hu3dGSDtBkFGh7y2C9HskrXd 12345");
+        wrapper.processLine("to 2MxofCZSNFE9Xo5kmtGYpMH4d4JZsThzfhN 777777");
+        wrapper.processLine("rmto 1");
+        wrapper.processLine("rmto 2");
         wrapper.processLine("to mmcgtfjqG1sMvZjzEupfufSqehgzngcqFo 98765");
         wrapper.processLine("to 2MxofCZSNFE9Xo5kmtGYpMH4d4JZsThzfhN 777777");
         wrapper.processLine("withfee 200000");
-        wrapper.processLine("changeto 2MvrkztsxEdgMGbDSGVeGFx3tbE5Gre8ZtU");
 
         Assert.assertEquals(expectedRaw, wrapper.builder.build().getRawTransaction());
     }

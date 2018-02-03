@@ -50,8 +50,26 @@ public class TransactionBuilder {
         return this;
     }
 
+    public TransactionBuilder rmInputAt(int i) {
+        int index = i - 1;
+        if (index < 0 || index >= inputs.size()) {
+            throw new RuntimeException("No input found with index " + i);
+        }
+        inputs.remove(index);
+        return this;
+    }
+
     public TransactionBuilder to(String address, long value) {
         outputs.add(new Output(mainNet, value, address, OutputType.CUSTOM));
+        return this;
+    }
+
+    public TransactionBuilder rmOutputAt(int i) {
+        int index = i - 1;
+        if (index < 0 || index >= outputs.size()) {
+            throw new RuntimeException("No output found with index " + i);
+        }
+        outputs.remove(index);
         return this;
     }
 
@@ -232,15 +250,15 @@ public class TransactionBuilder {
         result.append("Network: ").append(mainNet ? "MainNet" : "TestNet");
         if (inputs.size() > 0) {
             result.append("\nInputs: ").append(inputs.size());
-            inputs.forEach(i -> {
-                result.append("\n   ").append(i);
-            });
+            for (int i = 0; i < inputs.size(); i++) {
+                result.append("\n   ").append(i + 1).append(". ").append(inputs.get(i));
+            }
         }
         if (outputs.size() > 0) {
             result.append("\nOutputs: ").append(outputs.size());
-            outputs.forEach(o -> {
-                result.append("\n   ").append(o);
-            });
+            for (int i = 0; i < outputs.size(); i++) {
+                result.append("\n   ").append(i + 1).append(". ").append(outputs.get(i));
+            }
         }
         if (changeAddress != null) {
             result.append("\nChange to: ").append(changeAddress);
