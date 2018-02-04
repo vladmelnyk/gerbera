@@ -1,7 +1,6 @@
 package sd.fomin.gerbera.boot;
 
 import sd.fomin.gerbera.boot.processor.*;
-import sd.fomin.gerbera.transaction.TransactionBuilder;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -24,7 +23,7 @@ public class BuildWrapper {
         add(new RmToProcessor());
     }};
 
-    TransactionBuilder builder;
+    ConsoleResult result = new ConsoleResult();
 
     void processLine(String line) {
         List<String> parts = getParts(line);
@@ -42,7 +41,7 @@ public class BuildWrapper {
         }
 
         List<String> arguments = parts.subList(1, parts.size());
-        builder = processor.process(builder, arguments);
+        result = processor.process(result, arguments);
     }
 
     private List<String> getParts(String line) {
@@ -53,6 +52,6 @@ public class BuildWrapper {
     }
 
     String state() {
-        return builder == null ? "EMPTY" : builder.toString();
+        return (result == null || result.getBuilder() == null) ? "EMPTY" : result.getBuilder().toString();
     }
 }

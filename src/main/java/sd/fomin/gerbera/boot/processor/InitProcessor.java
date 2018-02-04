@@ -1,18 +1,20 @@
 package sd.fomin.gerbera.boot.processor;
 
 import sd.fomin.gerbera.boot.processor.annotation.BuilderNotRequired;
+import sd.fomin.gerbera.boot.processor.annotation.BuildingProcessor;
 import sd.fomin.gerbera.boot.processor.annotation.CommandAliases;
 import sd.fomin.gerbera.transaction.TransactionBuilder;
 
 import java.util.Arrays;
 import java.util.List;
 
+@BuildingProcessor
 @BuilderNotRequired
 @CommandAliases({"init", "create"})
 public class InitProcessor extends Processor {
 
     @Override
-    public TransactionBuilder doProcess(TransactionBuilder current, List<String> arguments) {
+    public TransactionBuilder processBuilder(TransactionBuilder builder, List<String> arguments) {
 
         String network = arguments.get(0);
         if ("mainnet".equalsIgnoreCase(network)) {

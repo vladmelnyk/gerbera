@@ -1,7 +1,7 @@
 package sd.fomin.gerbera.boot.processor;
 
 import sd.fomin.gerbera.boot.processor.annotation.CommandAliases;
-import sd.fomin.gerbera.transaction.TransactionBuilder;
+import sd.fomin.gerbera.transaction.Transaction;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,10 +9,10 @@ import java.util.List;
 @CommandAliases({"raw", "hex"})
 public class RawProcessor extends Processor {
 
+
     @Override
-    protected TransactionBuilder doProcess(TransactionBuilder builder, List<String> arguments) {
-        System.out.println(builder.build().getRawTransaction());
-        return builder;
+    protected String stringifyTransaction(Transaction transaction, List<String> arguments) {
+        return transaction.getRawTransaction();
     }
 
     @Override
