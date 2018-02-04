@@ -249,13 +249,13 @@ public class TransactionBuilder {
 
         result.append("Network: ").append(mainNet ? "MainNet" : "TestNet");
         if (inputs.size() > 0) {
-            result.append("\nInputs: ").append(inputs.size());
+            result.append("\nInputs: ").append(inputs.stream().mapToLong(Input::getSatoshi).sum());
             for (int i = 0; i < inputs.size(); i++) {
                 result.append("\n   ").append(i + 1).append(". ").append(inputs.get(i));
             }
         }
         if (outputs.size() > 0) {
-            result.append("\nOutputs: ").append(outputs.size());
+            result.append("\nOutputs: ").append(outputs.stream().mapToLong(Output::getSatoshi).sum());
             for (int i = 0; i < outputs.size(); i++) {
                 result.append("\n   ").append(i + 1).append(". ").append(outputs.get(i));
             }
