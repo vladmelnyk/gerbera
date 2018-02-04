@@ -79,11 +79,17 @@ public class TransactionBuilder {
     }
 
     public TransactionBuilder withFee(long fee) {
+        if (fee < 0) {
+            throw new IllegalArgumentException("Fee must not be less than zero");
+        }
         this.fee = fee;
         return this;
     }
 
     public TransactionBuilder donate(long donate) {
+        if (donate < 0) {
+            throw new IllegalArgumentException("Donation must not be less than zero");
+        }
         this.donate = donate;
         return this;
     }

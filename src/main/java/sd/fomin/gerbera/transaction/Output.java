@@ -19,6 +19,9 @@ class Output {
     private final OutputType type;
 
     Output(boolean mainNet, long satoshi, String destination, OutputType type) {
+        if (satoshi <= 0) {
+            throw new IllegalArgumentException("Amount of satoshi must be a positive value");
+        }
         this.mainNet = mainNet;
         this.satoshi = satoshi;
         this.destination = destination;

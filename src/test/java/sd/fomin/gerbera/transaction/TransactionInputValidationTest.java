@@ -1,4 +1,4 @@
-package sd.fomin.gerbera;
+package sd.fomin.gerbera.transaction;
 
 import org.junit.Test;
 import sd.fomin.gerbera.transaction.TransactionBuilder;

@@ -32,7 +32,7 @@ class Input {
             throw new IllegalArgumentException("Locking script must not be null or empty");
         }
         if (satoshi <= 0) {
-            throw new IllegalArgumentException("Number of satoshi must be a positive value");
+            throw new IllegalArgumentException("Amount of satoshi must be a positive value");
         }
         if (wif == null || wif.trim().isEmpty()) {
             throw new IllegalArgumentException("WIF must not be null or empty");
