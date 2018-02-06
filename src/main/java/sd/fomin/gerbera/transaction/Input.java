@@ -10,6 +10,11 @@ import sd.fomin.gerbera.types.VarInt;
 import sd.fomin.gerbera.util.HashUtils;
 import sd.fomin.gerbera.util.HexUtils;
 
+import static sd.fomin.gerbera.util.ValidationUtils.isBase58;
+import static sd.fomin.gerbera.util.ValidationUtils.isEmpty;
+import static sd.fomin.gerbera.util.ValidationUtils.isHexString;
+import static sd.fomin.gerbera.util.ValidationUtils.isTransactionId;
+
 class Input {
 
     private static final UInt SEQUENCE = UInt.of(0xFFFFFFFF);
@@ -22,52 +27,14 @@ class Input {
     private final String wif;
 
     Input(boolean mainNet, String transaction, int index, String lock, long satoshi, String wif) {
-        if (transaction == null || transaction.trim().isEmpty()) {
-            throw new IllegalArgumentException("Previous transaction hash must not be null or empty");
-        }
-        if (index < 0) {
-            throw new IllegalArgumentException("Previous transaction output index must be a positive value");
-        }
-        if (lock == null || lock.trim().isEmpty()) {
-            throw new IllegalArgumentException("Locking script must not be null or empty");
-        }
-        if (satoshi <= 0) {
-            throw new IllegalArgumentException("Amount of satoshi must be a positive value");
-        }
-        if (wif == null || wif.trim().isEmpty()) {
-            throw new IllegalArgumentException("WIF must not be null or empty");
-        }
+        validateInputData(mainNet, transaction, index, lock, satoshi, wif);
+
         this.mainNet = mainNet;
         this.transaction = transaction;
         this.index = index;
         this.lock = lock;
         this.satoshi = satoshi;
         this.wif = wif;
-
-        validateLockingScript();
-    }
-
-    private void validateLockingScript() {
-        LockScriptType lockScriptType = LockScriptType.forLock(lock);
-        if (LockScriptType.P2PKH.equals(lockScriptType)) {
-            byte[] lockBytes = HexUtils.asBytes(lock);
-            OpSize pubKeyHashSize = OpSize.ofByte(lockBytes[2]);
-            if (pubKeyHashSize.getSize() != lockBytes.length - 5) {
-                throw new IllegalArgumentException("Incorrect PKH size. " +
-                        "Expected: " + pubKeyHashSize.getSize() +
-                        ". [" + lock + "]");
-            }
-        } else if (LockScriptType.P2SH.equals(lockScriptType)) {
-            byte[] lockBytes = HexUtils.asBytes(lock);
-            OpSize pubKeyHashSize = OpSize.ofByte(lockBytes[1]);
-            if (pubKeyHashSize.getSize() != lockBytes.length - 3) {
-                throw new IllegalArgumentException("Incorrect redeemScript size. " +
-                        "Expected: " + pubKeyHashSize.getSize() +
-                        ". [" + lock + "]");
-            }
-        } else {
-            throw new IllegalArgumentException("Provided locking script is not P2PKH or P2SH [" + lock + "]");
-        }
     }
 
     void fillTransaction(byte[] sigHash, Transaction transaction) {
@@ -179,5 +146,72 @@ class Input {
                 .append(" ").append(satoshi)
                 .append(" ").append(wif)
                 .toString();
+    }
+
+    private void validateInputData(boolean mainNet, String transaction, int index, String lock, long satoshi, String wif) {
+        validateTransactionId(transaction);
+        validateOutputIndex(index);
+        validateLockingScript(lock);
+        validateAmount(satoshi);
+        validateWif(wif);
+    }
+
+    private void validateTransactionId(String transaction) {
+        if (isEmpty(transaction)) {
+            throw new IllegalArgumentException("Transaction hash must not be null or empty");
+        }
+        if (!isTransactionId(transaction)) {
+            throw new IllegalArgumentException("Transaction hash must be 64 digit hex");
+        }
+    }
+
+    private void validateOutputIndex(int index) {
+        if (index < 0) {
+            throw new IllegalArgumentException("Previous transaction output index must be a positive value");
+        }
+    }
+
+    private void validateLockingScript(String lock) {
+        if (isEmpty(lock)) {
+            throw new IllegalArgumentException("Locking script must not be null or empty");
+        }
+        if (!isHexString(lock)) {
+            throw new IllegalArgumentException("Locking script must be in hex");
+        }
+        LockScriptType lockScriptType = LockScriptType.forLock(lock);
+        if (LockScriptType.P2PKH.equals(lockScriptType)) {
+            byte[] lockBytes = HexUtils.asBytes(lock);
+            OpSize pubKeyHashSize = OpSize.ofByte(lockBytes[2]);
+            if (pubKeyHashSize.getSize() != lockBytes.length - 5) {
+                throw new IllegalArgumentException("Incorrect PKH size. " +
+                        "Expected: " + pubKeyHashSize.getSize() +
+                        ". [" + lock + "]");
+            }
+        } else if (LockScriptType.P2SH.equals(lockScriptType)) {
+            byte[] lockBytes = HexUtils.asBytes(lock);
+            OpSize pubKeyHashSize = OpSize.ofByte(lockBytes[1]);
+            if (pubKeyHashSize.getSize() != lockBytes.length - 3) {
+                throw new IllegalArgumentException("Incorrect redeemScript size. " +
+                        "Expected: " + pubKeyHashSize.getSize() +
+                        ". [" + lock + "]");
+            }
+        } else {
+            throw new IllegalArgumentException("Provided locking script is not P2PKH or P2SH [" + lock + "]");
+        }
+    }
+
+    private void validateAmount(long satoshi) {
+        if (satoshi <= 0) {
+            throw new IllegalArgumentException("Amount of satoshi must be a positive value");
+        }
+    }
+
+    private void validateWif(String wif) {
+        if (isEmpty(wif)) {
+            throw new IllegalArgumentException("WIF must not be null or empty");
+        }
+        if (!isBase58(wif)) {
+            throw new IllegalArgumentException("WIF must contain only base58 characters");
+        }
     }
 }
