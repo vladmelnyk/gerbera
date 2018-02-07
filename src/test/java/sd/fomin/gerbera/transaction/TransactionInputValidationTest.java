@@ -235,10 +235,20 @@ public class TransactionInputValidationTest {
                         "OcV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testWrongChecksumWif() {
+        TransactionBuilder.create(false)
+                .from(
+                        "0000000000000000000000000000000000000000000000000000000000000000",
+                        1,
+                        "a914000000000000000000000000000000000000000087",
+                        1,
+                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwB");
+    }
 
     @Test
     public void testCorrectWithPKHScript() {
-        TransactionBuilder.create()
+        TransactionBuilder.create(false)
                 .from(
                         "0000000000000000000000000000000000000000000000000000000000000000",
                         1,
@@ -249,7 +259,7 @@ public class TransactionInputValidationTest {
 
     @Test
     public void testCorrectWithP2SHScript() {
-        TransactionBuilder.create()
+        TransactionBuilder.create(false)
                 .from(
                         "0000000000000000000000000000000000000000000000000000000000000000",
                         1,

@@ -19,22 +19,22 @@ class Input {
 
     private static final UInt SEQUENCE = UInt.of(0xFFFFFFFF);
 
-    private final boolean mainNet;
     private final String transaction;
     private final int index;
     private final String lock;
     private final long satoshi;
     private final String wif;
+    private final PrivateKey privateKey;
 
     Input(boolean mainNet, String transaction, int index, String lock, long satoshi, String wif) {
-        validateInputData(mainNet, transaction, index, lock, satoshi, wif);
+        validateInputData(transaction, index, lock, satoshi, wif);
 
-        this.mainNet = mainNet;
         this.transaction = transaction;
         this.index = index;
         this.lock = lock;
         this.satoshi = satoshi;
         this.wif = wif;
+        this.privateKey = PrivateKey.ofWif(mainNet, wif);
     }
 
     void fillTransaction(byte[] sigHash, Transaction transaction) {
@@ -51,14 +51,8 @@ class Input {
     }
 
     private byte[] createUnlockRegular(byte[] sigHash) {
-        if (wif == null) {
-            throw new IllegalStateException(
-                    "No WIF provided for input [" + transaction + ", " + index + "]");
-        }
-
         ByteBuffer result = new ByteBuffer();
 
-        PrivateKey privateKey = PrivateKey.ofWif(mainNet, wif);
         result.append(privateKey.sign(sigHash));
         result.append(SigHashType.ALL.asByte());
 
@@ -72,16 +66,10 @@ class Input {
     }
 
     private byte[] createUnlockSegwit() {
-        if (wif == null) {
-            throw new IllegalStateException(
-                    "No WIF provided for input [" + transaction + ", " + index + "]");
-        }
-
         ByteBuffer result = new ByteBuffer();
 
         result.append(OpCodes.FALSE);
         result.append((byte) 0x14); //ripemd160 size
-        PrivateKey privateKey = PrivateKey.ofWif(mainNet, wif);
         result.append(HashUtils.ripemd160(HashUtils.sha256(privateKey.getPublicKey())));
         result.putFirst(OpSize.ofInt(result.size()).getSize()); //PUSH DATA
 
@@ -91,8 +79,6 @@ class Input {
     byte[] getWitness(byte[] sigHash) {
         ByteBuffer result = new ByteBuffer();
         if (isSegWit()) {
-            PrivateKey privateKey = PrivateKey.ofWif(mainNet, wif);
-
             result.append((byte) 0x02);
 
             ByteBuffer sign = new ByteBuffer(privateKey.sign(sigHash));
@@ -130,8 +116,8 @@ class Input {
         return lock;
     }
 
-    String getWif() {
-        return wif;
+    PrivateKey getPrivateKey() {
+        return privateKey;
     }
 
     UInt getSequence() {
@@ -140,15 +126,14 @@ class Input {
 
     @Override
     public String toString() {
-        return new StringBuilder().append(transaction)
-                .append(" ").append(index)
-                .append(" ").append(lock)
-                .append(" ").append(satoshi)
-                .append(" ").append(wif)
-                .toString();
+        return transaction +
+                " " + index +
+                " " + lock +
+                " " + satoshi +
+                " " + wif;
     }
 
-    private void validateInputData(boolean mainNet, String transaction, int index, String lock, long satoshi, String wif) {
+    private void validateInputData(String transaction, int index, String lock, long satoshi, String wif) {
         validateTransactionId(transaction);
         validateOutputIndex(index);
         validateLockingScript(lock);

@@ -37,7 +37,7 @@ public class Base58CheckUtils {
 
         for (int i = 0; i < 4; i++) {
             if (shaOfSha[i] != checksum[i]) {
-                throw new IllegalArgumentException("Wrong checksum");
+                throw new IllegalArgumentException("Wrong Base58 checksum");
             }
         }
 

@@ -30,6 +30,11 @@ public class TransactionOutputValidationTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void testWrongChecksumDestination() {
+        TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV2", 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void testZeroSatochi() {
         TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 0);
     }
@@ -37,5 +42,10 @@ public class TransactionOutputValidationTest {
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeSatochi() {
         TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", -1);
+    }
+
+    @Test
+    public void testCorrectOutput() {
+        TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
     }
 }

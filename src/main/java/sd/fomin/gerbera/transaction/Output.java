@@ -11,6 +11,8 @@ import sd.fomin.gerbera.util.HexUtils;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static sd.fomin.gerbera.util.ValidationUtils.isBase58;
 import static sd.fomin.gerbera.util.ValidationUtils.isEmpty;
 
@@ -20,6 +22,7 @@ class Output {
     private final long satoshi;
     private final String destination;
     private final OutputType type;
+    private final byte[] decodedAddress;
 
     Output(boolean mainNet, long satoshi, String destination, OutputType type) {
         validateOutputData(mainNet, satoshi, destination);
@@ -28,6 +31,7 @@ class Output {
         this.satoshi = satoshi;
         this.destination = destination;
         this.type = type;
+        this.decodedAddress = Base58CheckUtils.decode(destination);
     }
 
     byte[] serializeForSigHash() {
@@ -35,7 +39,7 @@ class Output {
 
         serialized.append(ULong.of(satoshi).asLitEndBytes());
 
-        byte[] lockingScript = getLockingScript(mainNet, destination);
+        byte[] lockingScript = getLockingScript();
         serialized.append(VarInt.of(lockingScript.length).asLitEndBytes());
         serialized.append(lockingScript);
 
@@ -46,13 +50,12 @@ class Output {
         transaction.addHeader("   Output (" + type.getDesc() + ")");
 
         transaction.addData("      Satoshi", ULong.of(satoshi).toString());
-        byte[] lockingScript = getLockingScript(mainNet, destination);
+        byte[] lockingScript = getLockingScript();
         transaction.addData("      Lock length", VarInt.of(lockingScript.length).toString());
         transaction.addData("      Lock", HexUtils.asString(lockingScript));
     }
 
-    private byte[] getLockingScript(boolean mainNet, String destination) {
-        byte[] decodedAddress = Base58CheckUtils.decode(destination);
+    private byte[] getLockingScript() {
         byte[] hash = Arrays.copyOfRange(decodedAddress, 1, decodedAddress.length);
 
         byte prefixP2PKH = mainNet ? (byte) 0x00 : (byte) 0x6F;
@@ -84,7 +87,7 @@ class Output {
 
     @Override
     public String toString() {
-        return new StringBuilder().append(destination).append(" ").append(satoshi).toString();
+        return destination + " " + satoshi;
     }
 
     private void validateOutputData(boolean mainNet, long satoshi, String destination) {
@@ -107,8 +110,8 @@ class Output {
             throw new IllegalArgumentException("Address must contain only base58 characters");
         }
 
-        List<Character> prefixP2PKH = mainNet ? Arrays.asList('1') : Arrays.asList('m', 'n');
-        List<Character> prefixP2SH = Arrays.asList(mainNet ? '3' : '2');
+        List<Character> prefixP2PKH = mainNet ? singletonList('1') : asList('m', 'n');
+        List<Character> prefixP2SH = singletonList(mainNet ? '3' : '2');
         char prefix = destination.charAt(0);
 
         if (!prefixP2PKH.contains(prefix) && !prefixP2SH.contains(prefix)) {

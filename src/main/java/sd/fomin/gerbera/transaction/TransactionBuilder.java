@@ -213,7 +213,7 @@ public class TransactionBuilder {
         result.append(currentInput.getTransactionHashBytesLitEnd()); //outpoint
         result.append(UInt.of(currentInput.getIndex()).asLitEndBytes());
 
-        PrivateKey privateKey = PrivateKey.ofWif(mainNet, currentInput.getWif());
+        PrivateKey privateKey = currentInput.getPrivateKey();
         byte[] pkh = HashUtils.ripemd160(HashUtils.sha256(privateKey.getPublicKey())); //scriptCode
         ByteBuffer scriptCode = new ByteBuffer(OpCodes.DUP, OpCodes.HASH160, (byte) 0x14);
         scriptCode.append(pkh);
