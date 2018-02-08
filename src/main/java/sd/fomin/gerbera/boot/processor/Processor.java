@@ -37,7 +37,7 @@ public abstract class Processor {
             if (transaction == null) {
                 transaction = wrapper.getBuilder().build();
             }
-            System.out.println(stringifyTransaction(transaction, arguments));
+            System.out.println(stringifyTransaction(transaction));
             return new ConsoleResult(wrapper.getBuilder(), transaction);
         }
     }
@@ -59,14 +59,14 @@ public abstract class Processor {
     }
 
     public boolean supportsCommand(String command) {
-        return Arrays.stream(aliases).filter(alias -> command.equals(alias)).count() > 0;
+        return Arrays.stream(aliases).filter(command::equals).count() > 0;
     }
 
     protected TransactionBuilder processBuilder(TransactionBuilder builder, List<String> arguments) {
         throw new UnsupportedOperationException("Processor " + getClass().getSimpleName() + " must implement the method");
     }
 
-    protected String stringifyTransaction(Transaction transaction, List<String> arguments) {
+    protected String stringifyTransaction(Transaction transaction) {
         throw new UnsupportedOperationException("Processor " + getClass().getSimpleName() + " must implement the method");
     }
 

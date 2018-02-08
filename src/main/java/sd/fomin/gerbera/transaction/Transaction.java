@@ -40,7 +40,7 @@ public class Transaction {
                 .append("\n");
 
         return info.toString();
-    };
+    }
 
     void addData(String name, String value) {
         addData(name, value, true);

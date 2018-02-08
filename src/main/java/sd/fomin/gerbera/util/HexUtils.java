@@ -7,7 +7,7 @@ public class HexUtils {
     public static String asString(byte... bytes) {
         StringBuilder result = new StringBuilder();
 
-        for ( int i = 0; i < bytes.length; i++) {
+        for (int i = 0; i < bytes.length; i++) {
             int v = bytes[i] & 0xFF;
             result.append(Character.forDigit(v >>> 4, 16));
             result.append(Character.forDigit(v & 0x0F, 16));

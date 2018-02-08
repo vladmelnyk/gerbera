@@ -115,7 +115,7 @@ public class TransactionBuilder {
             throw new IllegalStateException("Transaction must contain at least one output");
         }
 
-        boolean buildSegWitTransaction = inputs.stream().anyMatch(i -> i.isSegWit());
+        boolean buildSegWitTransaction = inputs.stream().anyMatch(Input::isSegWit);
 
         Transaction transaction = new Transaction();
         transaction.addData("Version", VERSION.toString());
@@ -197,16 +197,15 @@ public class TransactionBuilder {
         Input currentInput = inputs.get(signedIndex);
 
         ByteBuffer prevOuts = new ByteBuffer(); //hashPrevOuts
-        for (int i = 0; i < inputs.size(); i++) {
-            Input input = inputs.get(i);
+        for (Input input : inputs) {
             prevOuts.append(input.getTransactionHashBytesLitEnd());
             prevOuts.append(UInt.of(input.getIndex()).asLitEndBytes());
         }
         result.append(HashUtils.sha256(HashUtils.sha256(prevOuts.bytes())));
 
         ByteBuffer sequences = new ByteBuffer(); //hashSequences
-        for (int i = 0; i < inputs.size(); i++) {
-            sequences.append(inputs.get(i).getSequence().asLitEndBytes());
+        for (Input input : inputs) {
+            sequences.append(input.getSequence().asLitEndBytes());
         }
         result.append(HashUtils.sha256(HashUtils.sha256(sequences.bytes())));
 

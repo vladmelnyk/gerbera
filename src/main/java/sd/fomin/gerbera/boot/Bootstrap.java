@@ -7,8 +7,6 @@ import java.util.Scanner;
 
 public class Bootstrap {
 
-    private static TransactionBuilder builder = null;
-
     public static void main(String[] args) {
         BuildWrapper buildWrapper = new BuildWrapper();
         Scanner in = new Scanner(System.in);

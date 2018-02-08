@@ -9,13 +9,14 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static sd.fomin.gerbera.crypto.Numbers.*;
 
 public class PrivateKey {
 
-    private BigInteger key;
-
-    private boolean compressed;
+    private final BigInteger key;
+    private final boolean compressed;
 
     private PrivateKey(BigInteger key, boolean compressed) {
         this.key = key;
@@ -30,7 +31,7 @@ public class PrivateKey {
         byte prefix = mainNet ? (byte) 0x80 : (byte) 0xEF;
         byte[] decoded = Base58CheckUtils.decode(wif);
         if (decoded[0] != prefix) {
-            throw new IllegalArgumentException("Decoded WIF must start with 0x" + HexUtils.asString(new byte[] { prefix }) + " byte");
+            throw new IllegalArgumentException("Decoded WIF must start with 0x" + HexUtils.asString(prefix) + " byte");
         }
 
         byte[] pkBytes;
@@ -50,8 +51,8 @@ public class PrivateKey {
     }
 
     private static void validateWifFormat(boolean mainNet, String wif) {
-        List<Character> prefixWif = mainNet ? Arrays.asList('5') : Arrays.asList('9');
-        List<Character> prefixWifComp = mainNet ? Arrays.asList('K', 'L') : Arrays.asList('c');
+        List<Character> prefixWif = singletonList(mainNet ? '5' : '9');
+        List<Character> prefixWifComp = mainNet ? asList('K', 'L') : singletonList('c');
         char prefix = wif.charAt(0);
 
         if (!prefixWif.contains(prefix) && !prefixWifComp.contains(prefix)) {
@@ -90,10 +91,9 @@ public class PrivateKey {
     }
 
     private BigInteger getBigRandom() {
-        BigInteger bigRandom = new BigInteger(N.bitLength(), ApplicationRandom.get())
+        return new BigInteger(N.bitLength(), ApplicationRandom.get())
                 .mod(N.subtract(BigInteger.ONE))
                 .add(BigInteger.ONE);
-        return bigRandom;
     }
 
     public byte[] getPublicKey() {

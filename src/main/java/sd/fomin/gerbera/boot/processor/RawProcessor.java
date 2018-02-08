@@ -11,7 +11,7 @@ public class RawProcessor extends Processor {
 
 
     @Override
-    protected String stringifyTransaction(Transaction transaction, List<String> arguments) {
+    protected String stringifyTransaction(Transaction transaction) {
         return transaction.getRawTransaction();
     }
 

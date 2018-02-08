@@ -6,7 +6,7 @@ import sd.fomin.gerbera.util.HexUtils;
 public enum LockScriptType {
     P2PKH(false), P2SH(true);
 
-    private boolean segWit;
+    private final boolean segWit;
 
     LockScriptType(boolean segWit) {
         this.segWit = segWit;

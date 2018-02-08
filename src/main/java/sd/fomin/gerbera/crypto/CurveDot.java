@@ -10,7 +10,7 @@ public class CurveDot {
     private static final BigInteger BI_3 = new BigInteger("3");
     private static final BigInteger BI_7 = new BigInteger("7");
 
-    public static final CurveDot G = new CurveDot(G_X, G_Y);
+    private static final CurveDot G = new CurveDot(G_X, G_Y);
 
     private static final CurveDot[] DOUBLED_DOTS;
 
@@ -71,7 +71,7 @@ public class CurveDot {
     private void checkDotInCurve() {
         if (!x.pow(3).add(BI_7).mod(P).equals(y.pow(2).mod(P))) {
             throw new IllegalArgumentException("The dot [" + x + ", " + y + "] is not on the curve");
-        };
+        }
     }
 
     public BigInteger x() {
@@ -94,10 +94,6 @@ public class CurveDot {
 
         CurveDot dot = (CurveDot) o;
 
-        if (!x.equals(dot.x)) {
-            return false;
-        }
-
-        return y.equals(dot.y);
+        return x.equals(dot.x) && y.equals(dot.y);
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 public class SplitProcessor extends Processor {
 
     @Override
-    protected String stringifyTransaction(Transaction transaction, List<String> arguments) {
+    protected String stringifyTransaction(Transaction transaction) {
         return transaction.getSplitTransaction();
     }
 
