@@ -113,7 +113,7 @@ public class TransactionBuilder {
             throw new IllegalStateException("Transaction must contain at least one output");
         }
 
-        boolean buildSegWitTransaction = inputs.stream().anyMatch(Input::isSegWit);
+        boolean buildSegWitTransaction = containsSegwitInput();
 
         Transaction transaction = new Transaction();
         transaction.addData("Version", VERSION.toString());
@@ -177,12 +177,18 @@ public class TransactionBuilder {
         return change;
     }
 
+    private boolean containsSegwitInput() {
+        return inputs.stream().anyMatch(Input::isSegWit);
+    }
+
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
 
         result.append("Network: ").append(mainNet ? "MainNet" : "TestNet");
         if (inputs.size() > 0) {
+            result.append("\nSegwit transaction: ").append(containsSegwitInput() ? true : false);
+
             result.append("\nInputs: ").append(inputs.stream().mapToLong(Input::getSatoshi).sum());
             for (int i = 0; i < inputs.size(); i++) {
                 result.append("\n   ").append(i + 1).append(". ").append(inputs.get(i));
