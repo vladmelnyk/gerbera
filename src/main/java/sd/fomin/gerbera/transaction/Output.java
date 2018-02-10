@@ -1,7 +1,5 @@
 package sd.fomin.gerbera.transaction;
 
-import sd.fomin.gerbera.constant.OpCodes;
-import sd.fomin.gerbera.types.OpSize;
 import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.types.ULong;
 import sd.fomin.gerbera.types.VarInt;
@@ -55,32 +53,6 @@ class Output {
         transaction.addData("      Lock", HexUtils.asString(lockingScript));
     }
 
-    private byte[] getLockingScript() {
-        byte[] hash = Arrays.copyOfRange(decodedAddress, 1, decodedAddress.length);
-
-        byte prefixP2PKH = mainNet ? (byte) 0x00 : (byte) 0x6F;
-        byte prefixP2SH = mainNet ? (byte) 0x05 : (byte) 0xC4;
-
-        ByteBuffer lockingScript = new ByteBuffer();
-        if (decodedAddress[0] == prefixP2PKH) {
-            //P2PKH
-            lockingScript.append(OpCodes.DUP, OpCodes.HASH160);
-            lockingScript.append(OpSize.ofInt(hash.length).getSize());
-            lockingScript.append(hash);
-            lockingScript.append(OpCodes.EQUALVERIFY, OpCodes.CHECKSIG);
-        } else if (decodedAddress[0] == prefixP2SH) {
-            //P2SH
-            lockingScript.append(OpCodes.HASH160);
-            lockingScript.append(OpSize.ofInt(hash.length).getSize());
-            lockingScript.append(hash);
-            lockingScript.append(OpCodes.EQUAL);
-        } else {
-            throw new IllegalStateException("Should never happen");
-        }
-
-        return lockingScript.bytes();
-    }
-
     long getSatoshi() {
         return satoshi;
     }
@@ -88,6 +60,11 @@ class Output {
     @Override
     public String toString() {
         return destination + " " + satoshi;
+    }
+
+    private byte[] getLockingScript() {
+        return ScriptPubKeyProducer.getInstance(mainNet, decodedAddress[0])
+                .produceScript(Arrays.copyOfRange(decodedAddress, 1, decodedAddress.length));
     }
 
     private void validateOutputData(boolean mainNet, long satoshi, String destination) {
