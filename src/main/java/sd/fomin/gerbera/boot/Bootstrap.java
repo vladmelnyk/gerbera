@@ -1,7 +1,5 @@
 package sd.fomin.gerbera.boot;
 
-import sd.fomin.gerbera.transaction.TransactionBuilder;
-
 import java.util.Arrays;
 import java.util.Scanner;
 

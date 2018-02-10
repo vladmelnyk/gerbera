@@ -1,10 +1,6 @@
 package sd.fomin.gerbera.transaction;
 
-import sd.fomin.gerbera.constant.OpCodes;
 import sd.fomin.gerbera.constant.SigHashType;
-import sd.fomin.gerbera.crypto.PrivateKey;
-import sd.fomin.gerbera.types.OpSize;
-import sd.fomin.gerbera.types.ULong;
 import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.types.UInt;
 import sd.fomin.gerbera.types.VarInt;
@@ -23,6 +19,8 @@ public class TransactionBuilder {
     private static final byte SEGWIT_MARKER = (byte) 0x00;
     private static final byte SEGWIT_FLAG = (byte) 0x01;
     private static final UInt LOCK_TIME = UInt.of(0);
+
+    private final SigPreimageProducer preimageProducer = new SigPreimageProducer();
 
     private final boolean mainNet;
 
@@ -151,84 +149,15 @@ public class TransactionBuilder {
         return transaction;
     }
 
-    private byte[] getSigHash(List<Output> buildOutputs, int signedIndex) {
+    private byte[] getSigHash(List<Output> buildOutputs, int signedInputIndex) {
         ByteBuffer signBase = new ByteBuffer();
 
         signBase.append(VERSION.asLitEndBytes());
-        if (inputs.get(signedIndex).isSegWit()) {
-            signBase.append(getSegwitPreimage(buildOutputs, signedIndex));
-        } else {
-            signBase.append(getRegularPreimage(buildOutputs, signedIndex));
-        }
+        signBase.append(preimageProducer.produce(inputs, buildOutputs, signedInputIndex));
         signBase.append(LOCK_TIME.asLitEndBytes());
         signBase.append(SigHashType.ALL.asLitEndBytes());
 
         return HashUtils.sha256(HashUtils.sha256(signBase.bytes()));
-    }
-
-    private byte[] getRegularPreimage(List<Output> buildOutputs, int signedIndex) {
-        ByteBuffer result = new ByteBuffer();
-
-        result.append(VarInt.of(inputs.size()).asLitEndBytes());
-        for (int i = 0; i < inputs.size(); i++) {
-            Input input = inputs.get(i);
-            result.append(input.getTransactionHashBytesLitEnd());
-            result.append(UInt.of(input.getIndex()).asLitEndBytes());
-
-            if (i == signedIndex) {
-                byte[] lockBytes = HexUtils.asBytes(input.getLock());
-                result.append(VarInt.of(lockBytes.length).asLitEndBytes());
-                result.append(lockBytes);
-            } else {
-                result.append(VarInt.of(0).asLitEndBytes());
-            }
-
-            result.append(input.getSequence().asLitEndBytes());
-        }
-
-        result.append(VarInt.of(buildOutputs.size()).asLitEndBytes());
-        buildOutputs.stream().map(Output::serializeForSigHash).forEach(result::append);
-
-        return result.bytes();
-    }
-
-    private byte[] getSegwitPreimage(List<Output> buildOutputs, int signedIndex) {
-        ByteBuffer result = new ByteBuffer();
-        Input currentInput = inputs.get(signedIndex);
-
-        ByteBuffer prevOuts = new ByteBuffer(); //hashPrevOuts
-        for (Input input : inputs) {
-            prevOuts.append(input.getTransactionHashBytesLitEnd());
-            prevOuts.append(UInt.of(input.getIndex()).asLitEndBytes());
-        }
-        result.append(HashUtils.sha256(HashUtils.sha256(prevOuts.bytes())));
-
-        ByteBuffer sequences = new ByteBuffer(); //hashSequences
-        for (Input input : inputs) {
-            sequences.append(input.getSequence().asLitEndBytes());
-        }
-        result.append(HashUtils.sha256(HashUtils.sha256(sequences.bytes())));
-
-        result.append(currentInput.getTransactionHashBytesLitEnd()); //outpoint
-        result.append(UInt.of(currentInput.getIndex()).asLitEndBytes());
-
-        PrivateKey privateKey = currentInput.getPrivateKey();
-        byte[] pkh = HashUtils.ripemd160(HashUtils.sha256(privateKey.getPublicKey())); //scriptCode
-        ByteBuffer scriptCode = new ByteBuffer(OpCodes.DUP, OpCodes.HASH160, (byte) 0x14);
-        scriptCode.append(pkh);
-        scriptCode.append(OpCodes.EQUALVERIFY, OpCodes.CHECKSIG);
-        scriptCode.putFirst(OpSize.ofInt(scriptCode.size()).getSize());
-        result.append(scriptCode.bytes());
-
-        result.append(ULong.of(currentInput.getSatoshi()).asLitEndBytes()); //amount in
-
-        result.append(currentInput.getSequence().asLitEndBytes()); //sequence
-
-        ByteBuffer outs = new ByteBuffer(); //hash outs
-        buildOutputs.stream().map(Output::serializeForSigHash).forEach(outs::append);
-        result.append(HashUtils.sha256(HashUtils.sha256(outs.bytes())));
-
-        return result.bytes();
     }
 
     private long getChange() {
