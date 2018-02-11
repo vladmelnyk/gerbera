@@ -20,8 +20,6 @@ public class TransactionBuilder {
     private static final byte SEGWIT_FLAG = (byte) 0x01;
     private static final UInt LOCK_TIME = UInt.of(0);
 
-    private final SigPreimageProducer preimageProducer = new SigPreimageProducer();
-
     private final boolean mainNet;
 
     private final List<Input> inputs = new LinkedList<>();
@@ -153,7 +151,8 @@ public class TransactionBuilder {
         ByteBuffer signBase = new ByteBuffer();
 
         signBase.append(VERSION.asLitEndBytes());
-        signBase.append(preimageProducer.produce(inputs, buildOutputs, signedInputIndex));
+        signBase.append(SigPreimageProducer.getInstance(inputs.get(signedInputIndex).isSegWit())
+                .producePreimage(inputs, buildOutputs, signedInputIndex));
         signBase.append(LOCK_TIME.asLitEndBytes());
         signBase.append(SigHashType.ALL.asLitEndBytes());
 
