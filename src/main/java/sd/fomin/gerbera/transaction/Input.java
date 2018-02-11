@@ -1,6 +1,5 @@
 package sd.fomin.gerbera.transaction;
 
-import sd.fomin.gerbera.constant.SigHashType;
 import sd.fomin.gerbera.types.OpSize;
 import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.crypto.PrivateKey;
@@ -49,23 +48,7 @@ class Input {
     }
 
     byte[] getWitness(byte[] sigHash) {
-        ByteBuffer result = new ByteBuffer();
-        if (isSegWit()) {
-            result.append((byte) 0x02);
-
-            ByteBuffer sign = new ByteBuffer(privateKey.sign(sigHash));
-            sign.append(SigHashType.ALL.asByte());
-            result.append(OpSize.ofInt(sign.size()).getSize());
-            result.append(sign.bytes());
-
-            byte[] pubKey = privateKey.getPublicKey();
-            result.append(OpSize.ofInt(pubKey.length).getSize());
-            result.append(pubKey);
-        } else {
-            result.append((byte) 0x00);
-        }
-
-        return result.bytes();
+        return WitnessProducer.getInstance(isSegWit()).produceWitness(sigHash, privateKey);
     }
 
     byte[] getTransactionHashBytesLitEnd() {
