@@ -1,13 +1,11 @@
 package sd.fomin.gerbera.transaction;
 
-import sd.fomin.gerbera.constant.OpCodes;
 import sd.fomin.gerbera.constant.SigHashType;
 import sd.fomin.gerbera.types.OpSize;
 import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.crypto.PrivateKey;
 import sd.fomin.gerbera.types.UInt;
 import sd.fomin.gerbera.types.VarInt;
-import sd.fomin.gerbera.util.HashUtils;
 import sd.fomin.gerbera.util.HexUtils;
 
 import static sd.fomin.gerbera.util.ValidationUtils.isBase58;
@@ -42,38 +40,12 @@ class Input {
 
         transaction.addHeader(segWit ? "   Input (Segwit)" : "   Input");
 
-        byte[] unlocking = segWit ? createUnlockSegwit() : createUnlockRegular(sigHash);
+        byte[] unlocking = ScriptSigProducer.getInstance(segWit).produceScriptSig(sigHash, privateKey);
         transaction.addData("      Transaction out", HexUtils.asString(getTransactionHashBytesLitEnd()));
         transaction.addData("      Tout index", UInt.of(index).toString());
         transaction.addData("      Unlock length", HexUtils.asString(VarInt.of(unlocking.length).asLitEndBytes()));
         transaction.addData("      Unlock", HexUtils.asString(unlocking));
         transaction.addData("      Sequence", SEQUENCE.toString());
-    }
-
-    private byte[] createUnlockRegular(byte[] sigHash) {
-        ByteBuffer result = new ByteBuffer();
-
-        result.append(privateKey.sign(sigHash));
-        result.append(SigHashType.ALL.asByte());
-
-        result.putFirst(OpSize.ofInt(result.size()).getSize());
-
-        byte[] publicKey = privateKey.getPublicKey();
-        result.append(OpSize.ofInt(publicKey.length).getSize());
-        result.append(publicKey);
-
-        return result.bytes();
-    }
-
-    private byte[] createUnlockSegwit() {
-        ByteBuffer result = new ByteBuffer();
-
-        result.append(OpCodes.FALSE);
-        result.append((byte) 0x14); //ripemd160 size
-        result.append(HashUtils.ripemd160(HashUtils.sha256(privateKey.getPublicKey())));
-        result.putFirst(OpSize.ofInt(result.size()).getSize()); //PUSH DATA
-
-        return result.bytes();
     }
 
     byte[] getWitness(byte[] sigHash) {
