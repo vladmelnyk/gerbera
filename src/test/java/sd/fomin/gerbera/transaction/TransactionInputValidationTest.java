@@ -1,271 +1,331 @@
 package sd.fomin.gerbera.transaction;
 
 import org.junit.Test;
+import sd.fomin.gerbera.constant.ErrorMessages;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class TransactionInputValidationTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullTransaction() {
-        TransactionBuilder.create()
-                .from(
-                        null,
-                        1,
-                        "76a914000000000000000000000000000000000000000088ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            null,
+                            1,
+                            "76a914000000000000000000000000000000000000000088ac",
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_TRANSACTION_EMPTY);
+
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testEmptyTransaction() {
-        TransactionBuilder.create()
-                .from(
-                        "   ",
-                        1,
-                        "76a914000000000000000000000000000000000000000088ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "   ",
+                            1,
+                            "76a914000000000000000000000000000000000000000088ac",
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_TRANSACTION_EMPTY);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testWrongLengthTransaction() {
-        TransactionBuilder.create()
-                .from(
-                        "00000000000000000000000000000000000000000000000",
-                        1,
-                        "76a914000000000000000000000000000000000000000088ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "00000000000000000000000000000000000000000000000",
+                            1,
+                            "76a914000000000000000000000000000000000000000088ac",
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_TRANSACTION_NOT_64_HEX);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNotHexTransaction() {
-        TransactionBuilder.create()
-                .from(
-                        "000000000000000000000000000000Q000000000000000000000000000000000",
-                        1,
-                        "76a914000000000000000000000000000000000000000088ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "000000000000000000000000000000Q000000000000000000000000000000000",
+                            1,
+                            "76a914000000000000000000000000000000000000000088ac",
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_TRANSACTION_NOT_64_HEX);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidIndex() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        -1,
-                        "76a914000000000000000000000000000000000000000088ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            -1,
+                            "76a914000000000000000000000000000000000000000088ac",
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_INDEX_NEGATIVE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullScript() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        null,
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            null,
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_LOCK_EMPTY);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testEmptyScript() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "   ",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            "   ",
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_LOCK_EMPTY);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNotHexScript() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "76a9140000000000000000Q0000000000000000000000088ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            "76a9140000000000000000Q0000000000000000000000088ac",
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_LOCK_NOT_HEX);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testZeroSatochi() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "76a914000000000000000000000000000000000000000088ac",
-                        0,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            "76a914000000000000000000000000000000000000000088ac",
+                            0,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_AMOUNT_NOT_POSITIVE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNegativeSatochi() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "76a914000000000000000000000000000000000000000088ac",
-                        -1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            "76a914000000000000000000000000000000000000000088ac",
+                            -1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_AMOUNT_NOT_POSITIVE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIncorrectPKHScriptFormatOpDup() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "75a914000000000000000000000000000000000000000088ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        String script = "75a914000000000000000000000000000000000000000088ac";
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            script,
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(String.format(ErrorMessages.INPUT_LOCK_WRONG_FORMAT, script));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIncorrectPKHScriptFormatOpHash() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "76a814000000000000000000000000000000000000000088ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        String script = "76a814000000000000000000000000000000000000000088ac";
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            script,
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(String.format(ErrorMessages.INPUT_LOCK_WRONG_FORMAT, script));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIncorrectPKHScriptFormatOpEqual() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "76a914000000000000000000000000000000000000000087ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        String script = "76a914000000000000000000000000000000000000000087ac";
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            script,
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(String.format(ErrorMessages.INPUT_LOCK_WRONG_FORMAT, script));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIncorrectPKHScriptFormatOpChecksig() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "76a914000000000000000000000000000000000000000088ad",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        String script = "76a914000000000000000000000000000000000000000088ad";
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            script,
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(String.format(ErrorMessages.INPUT_LOCK_WRONG_FORMAT, script));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIncorrectPKHScriptSize() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "76a913000000000000000000000000000000000000000088ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        String script = "76a913000000000000000000000000000000000000000088ac";
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            script,
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(String.format(ErrorMessages.INPUT_WRONG_PKH_SIZE, script));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIncorrectP2SHScriptFormatOpDup() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "a814000000000000000000000000000000000000000087",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        String script = "a814000000000000000000000000000000000000000087";
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            script,
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(String.format(ErrorMessages.INPUT_LOCK_WRONG_FORMAT, script));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIncorrectP2SHScriptFormatOpHash160() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "a914000000000000000000000000000000000000000088",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        String script = "a914000000000000000000000000000000000000000088";
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            script,
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(String.format(ErrorMessages.INPUT_LOCK_WRONG_FORMAT, script));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIncorrectP2SHScriptSize() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "a913000000000000000000000000000000000000000087",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        String script = "a913000000000000000000000000000000000000000087";
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            script,
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(String.format(ErrorMessages.INPUT_WRONG_RS_SIZE, script));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullWif() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "a914000000000000000000000000000000000000000087",
-                        1,
-                        null);
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            "a914000000000000000000000000000000000000000087",
+                            1,
+                            null);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_WIF_EMPTY);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testEmptyWif() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "a914000000000000000000000000000000000000000087",
-                        1,
-                        "   ");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            "a914000000000000000000000000000000000000000087",
+                            1,
+                            "   ");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_WIF_EMPTY);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNotBase58Wif() {
-        TransactionBuilder.create()
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "a914000000000000000000000000000000000000000087",
-                        1,
-                        "OcV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create()
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            "a914000000000000000000000000000000000000000087",
+                            1,
+                            "OcV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.INPUT_WIF_NOT_BASE_58);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testWrongChecksumWif() {
-        TransactionBuilder.create(false)
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "a914000000000000000000000000000000000000000087",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwB");
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create(false)
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            "a914000000000000000000000000000000000000000087",
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwB");
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.BASE58_WRONG_CS);
     }
 
     @Test
     public void testCorrectWithPKHScript() {
-        TransactionBuilder.create(false)
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "a914000000000000000000000000000000000000000087",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatCode(() -> {
+            TransactionBuilder.create(false)
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            "a914000000000000000000000000000000000000000087",
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).doesNotThrowAnyException();
     }
 
     @Test
     public void testCorrectWithP2SHScript() {
-        TransactionBuilder.create(false)
-                .from(
-                        "0000000000000000000000000000000000000000000000000000000000000000",
-                        1,
-                        "76a914000000000000000000000000000000000000000088ac",
-                        1,
-                        "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        assertThatCode(() -> {
+            TransactionBuilder.create(false)
+                    .from(
+                            "0000000000000000000000000000000000000000000000000000000000000000",
+                            1,
+                            "76a914000000000000000000000000000000000000000088ac",
+                            1,
+                            "cV1Qu5Jf9KVaK6AhhJbXptmzjZuCPuWr5o19o9A6WrxhNKhdfCwA");
+        }).doesNotThrowAnyException();
     }
 
 }

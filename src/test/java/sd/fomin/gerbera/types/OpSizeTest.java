@@ -1,64 +1,73 @@
 package sd.fomin.gerbera.types;
 
 import org.junit.Test;
+import sd.fomin.gerbera.constant.ErrorMessages;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.*;
 
 public class OpSizeTest {
 
     @Test
     public void testMinValueInt() {
         OpSize value = OpSize.ofInt(1);
-        assertEquals((byte) 0x01, value.getSize());
+        assertThat(value.getSize()).isEqualTo((byte) 0x01);
     }
 
     @Test
     public void testMaxValueInt() {
         OpSize value = OpSize.ofInt(0x4b);
-        assertEquals((byte) 0x4b, value.getSize());
+        assertThat(value.getSize()).isEqualTo((byte) 0x4b);
     }
 
     @Test
     public void testMidValueInt() {
         OpSize value = OpSize.ofInt(20);
-        assertEquals((byte) 20, value.getSize());
+        assertThat(value.getSize()).isEqualTo((byte) 20);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testLowerValueInt() {
-        OpSize.ofInt(0);
+        assertThatThrownBy(() -> {
+            OpSize.ofInt(0);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OP_SIZE_NOT_IMPLEMENTED);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testHigherValueInt() {
-        OpSize.ofInt(0x4c);
+        assertThatThrownBy(() -> {
+            OpSize.ofInt(0x4c);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OP_SIZE_NOT_IMPLEMENTED);
     }
 
     @Test
     public void testMinValueByte() {
         OpSize value = OpSize.ofByte((byte) 1);
-        assertEquals((byte) 0x01, value.getSize());
+        assertThat(value.getSize()).isEqualTo((byte) 0x01);
     }
 
     @Test
     public void testMaxValueByte() {
         OpSize value = OpSize.ofByte((byte) 0x4b);
-        assertEquals((byte) 0x4b, value.getSize());
+        assertThat(value.getSize()).isEqualTo((byte) 0x4b);
     }
 
     @Test
     public void testMidValueByte() {
         OpSize value = OpSize.ofByte((byte) 20);
-        assertEquals((byte) 20, value.getSize());
+        assertThat(value.getSize()).isEqualTo((byte) 20);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testLowerValueByte() {
-        OpSize.ofByte((byte) 0);
+        assertThatThrownBy(() -> {
+            OpSize.ofByte((byte) 0);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OP_SIZE_NOT_IMPLEMENTED);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testHigherValueByte() {
-        OpSize.ofByte((byte) 0x4c);
+        assertThatThrownBy(() -> {
+            OpSize.ofByte((byte) 0x4c);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OP_SIZE_NOT_IMPLEMENTED);
     }
 }

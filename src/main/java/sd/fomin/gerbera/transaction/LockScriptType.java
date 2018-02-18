@@ -1,5 +1,6 @@
 package sd.fomin.gerbera.transaction;
 
+import sd.fomin.gerbera.constant.ErrorMessages;
 import sd.fomin.gerbera.constant.OpCodes;
 import sd.fomin.gerbera.util.HexUtils;
 
@@ -23,7 +24,7 @@ public enum LockScriptType {
         } else if (isP2SH(lockBytes)) {
             return P2SH;
         } else {
-            throw new IllegalArgumentException("Provided locking script is not P2PKH or P2SH [" + lock + "]");
+            throw new IllegalArgumentException(String.format(ErrorMessages.INPUT_LOCK_WRONG_FORMAT, lock));
         }
     }
 

@@ -1,11 +1,12 @@
 package sd.fomin.gerbera.transaction;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import sd.fomin.gerbera.crypto.PrivateKey;
 import sd.fomin.gerbera.util.ApplicationRandom;
 import sd.fomin.gerbera.util.HexUtils;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class WitnessProducerTest {
 
@@ -33,7 +34,7 @@ public class WitnessProducerTest {
                 "01" +
                 "21" +
                 "03c1029aa08c5e72d09228d9bb90ae48888a6955f79ec052753a81dfd049f39bb7";
-        Assert.assertArrayEquals(HexUtils.asBytes(expected), witness);
+        assertThat(witness).isEqualTo(HexUtils.asBytes(expected));
     }
 
     @Test
@@ -41,6 +42,6 @@ public class WitnessProducerTest {
         byte[] sigHash = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04};
         PrivateKey key = PrivateKey.ofWif(false, "cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
         byte[] witness = WitnessProducer.getInstance(false).produceWitness(sigHash, key);
-        Assert.assertArrayEquals(new byte[] {0x00}, witness);
+        assertThat(witness).isEqualTo(new byte[] {0x00});
     }
 }

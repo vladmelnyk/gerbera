@@ -1,51 +1,78 @@
 package sd.fomin.gerbera.transaction;
 
 import org.junit.Test;
+import sd.fomin.gerbera.constant.ErrorMessages;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class TransactionOutputValidationTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullDestination() {
-        TransactionBuilder.create().to(null, 1);
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create().to(null, 1);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OUTPUT_ADDRESS_EMPTY);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testEmptyDestination() {
-        TransactionBuilder.create().to("   ", 1);
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create().to("   ", 1);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OUTPUT_ADDRESS_EMPTY);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNotBase58Destination() {
-        TransactionBuilder.create().to("1NZUP3JAc9JkmbvlmoTv7nVgZGtyJjirKV1", 1);
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create().to("1NZUP3JAc9JkmbvlmoTv7nVgZGtyJjirKV1", 1);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OUTPUT_ADDRESS_NOT_BASE_58);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIncorrectDestinationPrefixMainNet() {
-        TransactionBuilder.create().to("2NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create().to("2NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
+        })
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(String.format(ErrorMessages.OUTPUT_ADDRESS_WRONG_PREFIX, "[1]", "[3]"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testIncorrectDestinationPrefixTestNet() {
-        TransactionBuilder.create(false).to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create(false).to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
+        })
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(String.format(ErrorMessages.OUTPUT_ADDRESS_WRONG_PREFIX, "[m, n]", "[2]"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testWrongChecksumDestination() {
-        TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV2", 1);
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV2", 1);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.BASE58_WRONG_CS);
+
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testZeroSatochi() {
-        TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 0);
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 0);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OUTPUT_AMOUNT_NOT_POSITIVE);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNegativeSatochi() {
-        TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", -1);
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", -1);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OUTPUT_AMOUNT_NOT_POSITIVE);
     }
 
     @Test
     public void testCorrectOutput() {
-        TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
+        assertThatCode(() -> {
+            TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
+        }).doesNotThrowAnyException();
+
     }
 }

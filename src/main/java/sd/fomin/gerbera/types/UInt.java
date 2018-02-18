@@ -1,5 +1,6 @@
 package sd.fomin.gerbera.types;
 
+import sd.fomin.gerbera.constant.ErrorMessages;
 import sd.fomin.gerbera.util.HexUtils;
 
 public class UInt {
@@ -25,7 +26,7 @@ public class UInt {
 
     public byte asByte() {
         if (litEndBytes[1] != 0 || litEndBytes[2] != 0 || litEndBytes[3] != 0) {
-            throw new IllegalStateException("The satoshi is more than 255 and can't be represented as one byte");
+            throw new IllegalStateException(ErrorMessages.UINT_NOT_REPRESENTABLE);
         }
         return litEndBytes[0];
     }

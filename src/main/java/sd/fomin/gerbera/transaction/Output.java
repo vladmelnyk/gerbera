@@ -1,5 +1,6 @@
 package sd.fomin.gerbera.transaction;
 
+import sd.fomin.gerbera.constant.ErrorMessages;
 import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.types.ULong;
 import sd.fomin.gerbera.types.VarInt;
@@ -74,17 +75,17 @@ class Output {
 
     private void validateAmount(long satoshi) {
         if (satoshi <= 0) {
-            throw new IllegalArgumentException("Amount of satoshi must be a positive value");
+            throw new IllegalArgumentException(ErrorMessages.OUTPUT_AMOUNT_NOT_POSITIVE);
         }
     }
 
     private void validateDestinationAddress(boolean mainNet, String destination) {
         if (isEmpty(destination)) {
-            throw new IllegalArgumentException("Address must not be null or empty");
+            throw new IllegalArgumentException(ErrorMessages.OUTPUT_ADDRESS_EMPTY);
         }
 
         if (!isBase58(destination)) {
-            throw new IllegalArgumentException("Address must contain only base58 characters");
+            throw new IllegalArgumentException(ErrorMessages.OUTPUT_ADDRESS_NOT_BASE_58);
         }
 
         List<Character> prefixP2PKH = mainNet ? singletonList('1') : asList('m', 'n');
@@ -92,8 +93,7 @@ class Output {
         char prefix = destination.charAt(0);
 
         if (!prefixP2PKH.contains(prefix) && !prefixP2SH.contains(prefix)) {
-            throw new IllegalArgumentException("Only addresses starting with " + prefixP2PKH + " (P2PKH) " +
-                    "or " + prefixP2SH + " (P2SH) supported.");
+            throw new IllegalArgumentException(String.format(ErrorMessages.OUTPUT_ADDRESS_WRONG_PREFIX, prefixP2PKH, prefixP2SH));
         }
     }
 }

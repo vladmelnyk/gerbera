@@ -1,11 +1,12 @@
 package sd.fomin.gerbera;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import sd.fomin.gerbera.transaction.Transaction;
 import sd.fomin.gerbera.transaction.TransactionBuilder;
 import sd.fomin.gerbera.util.ApplicationRandom;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class RawTransactionTest {
 
@@ -242,13 +243,13 @@ public class RawTransactionTest {
 
     private void check(String expectedRaw, TransactionBuilder builder) {
         Transaction transaction = builder.build();
-        Assert.assertEquals(expectedRaw, transaction.getRawTransaction());
+        assertThat(transaction.getRawTransaction()).isEqualTo(expectedRaw);
 
         //Check builder not changed after #build() called
         ApplicationRandom.reset();
         Transaction rebuildTransaction = builder.build();
-        Assert.assertEquals(transaction.getRawTransaction(), rebuildTransaction.getRawTransaction());
-        Assert.assertEquals(transaction.getSplitTransaction(), rebuildTransaction.getSplitTransaction());
-        Assert.assertEquals(transaction.getTransactionInfo(), rebuildTransaction.getTransactionInfo());
+        assertThat(rebuildTransaction.getRawTransaction()).isEqualTo(transaction.getRawTransaction());
+        assertThat(rebuildTransaction.getSplitTransaction()).isEqualTo(transaction.getSplitTransaction());
+        assertThat(rebuildTransaction.getTransactionInfo()).isEqualTo(transaction.getTransactionInfo());
     }
 }

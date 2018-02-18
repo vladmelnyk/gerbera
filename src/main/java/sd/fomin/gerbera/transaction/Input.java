@@ -1,5 +1,6 @@
 package sd.fomin.gerbera.transaction;
 
+import sd.fomin.gerbera.constant.ErrorMessages;
 import sd.fomin.gerbera.types.OpSize;
 import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.crypto.PrivateKey;
@@ -7,10 +8,7 @@ import sd.fomin.gerbera.types.UInt;
 import sd.fomin.gerbera.types.VarInt;
 import sd.fomin.gerbera.util.HexUtils;
 
-import static sd.fomin.gerbera.util.ValidationUtils.isBase58;
-import static sd.fomin.gerbera.util.ValidationUtils.isEmpty;
-import static sd.fomin.gerbera.util.ValidationUtils.isHexString;
-import static sd.fomin.gerbera.util.ValidationUtils.isTransactionId;
+import static sd.fomin.gerbera.util.ValidationUtils.*;
 
 class Input {
 
@@ -98,42 +96,38 @@ class Input {
 
     private void validateTransactionId(String transaction) {
         if (isEmpty(transaction)) {
-            throw new IllegalArgumentException("Transaction hash must not be null or empty");
+            throw new IllegalArgumentException(ErrorMessages.INPUT_TRANSACTION_EMPTY);
         }
         if (!isTransactionId(transaction)) {
-            throw new IllegalArgumentException("Transaction hash must be 64 digit hex");
+            throw new IllegalArgumentException(ErrorMessages.INPUT_TRANSACTION_NOT_64_HEX);
         }
     }
 
     private void validateOutputIndex(int index) {
         if (index < 0) {
-            throw new IllegalArgumentException("Previous transaction output index must be a positive value");
+            throw new IllegalArgumentException(ErrorMessages.INPUT_INDEX_NEGATIVE);
         }
     }
 
     private void validateLockingScript(String lock) {
         if (isEmpty(lock)) {
-            throw new IllegalArgumentException("Locking script must not be null or empty");
+            throw new IllegalArgumentException(ErrorMessages.INPUT_LOCK_EMPTY);
         }
         if (!isHexString(lock)) {
-            throw new IllegalArgumentException("Locking script must be in hex");
+            throw new IllegalArgumentException(ErrorMessages.INPUT_LOCK_NOT_HEX);
         }
         LockScriptType lockScriptType = LockScriptType.forLock(lock);
         if (LockScriptType.P2PKH.equals(lockScriptType)) {
             byte[] lockBytes = HexUtils.asBytes(lock);
             OpSize pubKeyHashSize = OpSize.ofByte(lockBytes[2]);
             if (pubKeyHashSize.getSize() != lockBytes.length - 5) {
-                throw new IllegalArgumentException("Incorrect PKH size. " +
-                        "Expected: " + pubKeyHashSize.getSize() +
-                        ". [" + lock + "]");
+                throw new IllegalArgumentException(String.format(ErrorMessages.INPUT_WRONG_PKH_SIZE, lock));
             }
         } else if (LockScriptType.P2SH.equals(lockScriptType)) {
             byte[] lockBytes = HexUtils.asBytes(lock);
             OpSize pubKeyHashSize = OpSize.ofByte(lockBytes[1]);
             if (pubKeyHashSize.getSize() != lockBytes.length - 3) {
-                throw new IllegalArgumentException("Incorrect redeemScript size. " +
-                        "Expected: " + pubKeyHashSize.getSize() +
-                        ". [" + lock + "]");
+                throw new IllegalArgumentException(String.format(ErrorMessages.INPUT_WRONG_RS_SIZE, lock));
             }
         } else {
             throw new IllegalArgumentException("Provided locking script is not P2PKH or P2SH [" + lock + "]");
@@ -142,16 +136,16 @@ class Input {
 
     private void validateAmount(long satoshi) {
         if (satoshi <= 0) {
-            throw new IllegalArgumentException("Amount of satoshi must be a positive value");
+            throw new IllegalArgumentException(ErrorMessages.INPUT_AMOUNT_NOT_POSITIVE);
         }
     }
 
     private void validateWif(String wif) {
         if (isEmpty(wif)) {
-            throw new IllegalArgumentException("WIF must not be null or empty");
+            throw new IllegalArgumentException(ErrorMessages.INPUT_WIF_EMPTY);
         }
         if (!isBase58(wif)) {
-            throw new IllegalArgumentException("WIF must contain only base58 characters");
+            throw new IllegalArgumentException(ErrorMessages.INPUT_WIF_NOT_BASE_58);
         }
     }
 }

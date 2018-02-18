@@ -1,11 +1,12 @@
 package sd.fomin.gerbera.transaction;
 
-import org.junit.Assert;
 import org.junit.Test;
 import sd.fomin.gerbera.util.HexUtils;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class SigPreimageProducerTest {
 
@@ -48,7 +49,7 @@ public class SigPreimageProducerTest {
                 "0a00000000000000" +
                 "17" +
                 "a9143cfafc3e72d2e7f4295cafed29117b3db00a302987";
-        Assert.assertArrayEquals(HexUtils.asBytes(expected), preimage);
+        assertThat(preimage).isEqualTo(HexUtils.asBytes(expected));
     }
 
     @Test
@@ -81,7 +82,7 @@ public class SigPreimageProducerTest {
                 "0a00000000000000" +
                 "ffffffff" +
                 "dd181cd7d6adaa934923e3f7e5a3c92ade79d06957c9323e59570872eb414c89";
-        Assert.assertArrayEquals(HexUtils.asBytes(expected), preimage);
+        assertThat(preimage).isEqualTo(HexUtils.asBytes(expected));
     }
 
 }

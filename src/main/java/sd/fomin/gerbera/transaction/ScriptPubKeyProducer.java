@@ -1,5 +1,6 @@
 package sd.fomin.gerbera.transaction;
 
+import sd.fomin.gerbera.constant.ErrorMessages;
 import sd.fomin.gerbera.constant.OpCodes;
 import sd.fomin.gerbera.types.OpSize;
 import sd.fomin.gerbera.util.ByteBuffer;
@@ -32,8 +33,7 @@ public interface ScriptPubKeyProducer {
             };
         }
 
-        throw new IllegalArgumentException("Unsupported producer for [mainnet: " + mainNet +
-                ", prefix: " + HexUtils.asString(prefix) + "]");
+        throw new IllegalArgumentException(String.format(ErrorMessages.SPK_UNSUPPORTED_PRODUCER, mainNet, prefix));
     }
 
 }

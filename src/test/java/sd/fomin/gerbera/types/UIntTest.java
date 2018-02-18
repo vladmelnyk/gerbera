@@ -1,51 +1,44 @@
 package sd.fomin.gerbera.types;
 
 import org.junit.Test;
+import sd.fomin.gerbera.constant.ErrorMessages;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertArrayEquals;
+import static org.assertj.core.api.Assertions.*;
 
 public class UIntTest {
 
     @Test
     public void testMinValue() {
         UInt value = UInt.of(0);
-        assertEquals("00000000", value.toString());
-        assertArrayEquals(new byte[] {0, 0, 0, 0}, value.asLitEndBytes());
+        assertThat(value.toString()).isEqualTo("00000000");
+        assertThat(value.asLitEndBytes()).containsExactly(0, 0, 0, 0);
     }
 
     @Test
     public void testMaxValue() {
         UInt value = UInt.of(0xFFFFFFFF);
-        assertEquals("ffffffff", value.toString());
-        assertArrayEquals(
-                new byte[] {
-                        (byte) 0xFF,
-                        (byte) 0xFF,
-                        (byte) 0xFF,
-                        (byte) 0xFF },
-                value.asLitEndBytes());
+        assertThat(value.toString()).isEqualTo("ffffffff");
+        assertThat(value.asLitEndBytes()).containsExactly(0xFF, 0xFF, 0xFF, 0xFF);
     }
 
     @Test
     public void testDiffBytes() {
         UInt value = UInt.of(0x11335577);
-        assertEquals("77553311", value.toString());
-        assertArrayEquals(
-                new byte[] {
-                        (byte) 0x77,
-                        (byte) 0x55,
-                        (byte) 0x33,
-                        (byte) 0x11 },
-                value.asLitEndBytes());
+        assertThat(value.toString()).isEqualTo("77553311");
+        assertThat(value.asLitEndBytes()).containsExactly(0x77, 0x55, 0x33, 0x11);
     }
 
-    @Test(expected = Exception.class)
-    public void testAsByte() {
-        UInt valid = UInt.of(0x01);
-        assertEquals(1, valid.asByte());
+    @Test
+    public void testAsByteValid() {
+        assertThatThrownBy(() -> {
+            UInt value = UInt.of(0x0101);
+            value.asByte();
+        }).isInstanceOf(IllegalStateException.class).hasMessage(ErrorMessages.UINT_NOT_REPRESENTABLE);
+    }
 
-        UInt invalid = UInt.of(0x0101);
-        invalid.asByte();
+    @Test
+    public void testAsByteInvalid() {
+        UInt value = UInt.of(0x01);
+        assertThat(value.asByte()).isEqualTo((byte) 1);
     }
 }

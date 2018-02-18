@@ -1,5 +1,7 @@
 package sd.fomin.gerbera.util;
 
+import sd.fomin.gerbera.constant.ErrorMessages;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 
@@ -37,7 +39,7 @@ public class Base58CheckUtils {
 
         for (int i = 0; i < 4; i++) {
             if (shaOfSha[i] != checksum[i]) {
-                throw new IllegalArgumentException("Wrong Base58 checksum");
+                throw new IllegalArgumentException(ErrorMessages.BASE58_WRONG_CS);
             }
         }
 

@@ -1,5 +1,6 @@
 package sd.fomin.gerbera.transaction;
 
+import sd.fomin.gerbera.constant.ErrorMessages;
 import sd.fomin.gerbera.constant.SigHashType;
 import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.types.UInt;
@@ -76,7 +77,7 @@ public class TransactionBuilder {
 
     public TransactionBuilder withFee(long fee) {
         if (fee < 0) {
-            throw new IllegalArgumentException("Fee must not be less than zero");
+            throw new IllegalArgumentException(ErrorMessages.FEE_NEGATIVE);
         }
         this.fee = fee;
         return this;

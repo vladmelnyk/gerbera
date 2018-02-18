@@ -1,11 +1,12 @@
 package sd.fomin.gerbera.transaction;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import sd.fomin.gerbera.crypto.PrivateKey;
 import sd.fomin.gerbera.util.ApplicationRandom;
 import sd.fomin.gerbera.util.HexUtils;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class ScriptSigProducerTest {
 
@@ -24,7 +25,7 @@ public class ScriptSigProducerTest {
                 "00" +
                 "14" +
                 "1f594f74c37771ef1d3c73317411d84e52ed7431";
-        Assert.assertArrayEquals(HexUtils.asBytes(expected), script);
+        assertThat(script).isEqualTo(HexUtils.asBytes(expected));
     }
 
     @Test
@@ -45,6 +46,6 @@ public class ScriptSigProducerTest {
                 "01" +
                 "21" +
                 "03c1029aa08c5e72d09228d9bb90ae48888a6955f79ec052753a81dfd049f39bb7";
-        Assert.assertArrayEquals(HexUtils.asBytes(expected), script);
+        assertThat(script).isEqualTo(HexUtils.asBytes(expected));
     }
 }

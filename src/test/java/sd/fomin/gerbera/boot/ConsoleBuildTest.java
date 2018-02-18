@@ -1,9 +1,10 @@
 package sd.fomin.gerbera.boot;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import sd.fomin.gerbera.util.ApplicationRandom;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class ConsoleBuildTest {
 
@@ -62,7 +63,7 @@ public class ConsoleBuildTest {
         wrapper.processLine("withfee 40002");
         wrapper.processLine("changeto 17Vu7st1U1KwymUKU4jJheHHGRVNqrcfLD");
 
-        Assert.assertEquals(expectedRaw, wrapper.result.getBuilder().build().getRawTransaction());
+        assertThat(wrapper.result.getBuilder().build().getRawTransaction()).isEqualTo(expectedRaw);
     }
 
     @Test
@@ -119,7 +120,7 @@ public class ConsoleBuildTest {
         wrapper.processLine("to 2N8hwP1WmJrFF5QWABn38y63uYLhnJYJYTF 50000");
         wrapper.processLine("changeto mwxFsmFviNnxAJngFBovrnvzYP8WMNiogW");
 
-        Assert.assertEquals(expectedRaw, wrapper.result.getBuilder().build().getRawTransaction());
+        assertThat(wrapper.result.getBuilder().build().getRawTransaction()).isEqualTo(expectedRaw);
     }
 
     @Test
@@ -183,65 +184,65 @@ public class ConsoleBuildTest {
         wrapper.processLine("to 2MxofCZSNFE9Xo5kmtGYpMH4d4JZsThzfhN 777777");
         wrapper.processLine("withfee 200000");
 
-        Assert.assertEquals(expectedRaw, wrapper.result.getBuilder().build().getRawTransaction());
+        assertThat(wrapper.result.getBuilder().build().getRawTransaction()).isEqualTo(expectedRaw);
     }
 
     @Test
     public void cachedTransactionTest() {
         BuildWrapper wrapper = new BuildWrapper();
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
 
         wrapper.processLine("init testnet");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
         wrapper.processLine("from bafd902bbb6cc048600f2daac015013aec260b4f25dd1690f3f8d0f9e1c860d9 0 76a9140af1ae78875d89840db368c013e9938468a493db88ac 10000   93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
         wrapper.processLine("to mmcgtfjqG1sMvZjzEupfufSqehgzngcqFo 5000");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
         wrapper.processLine("changeto mwxFsmFviNnxAJngFBovrnvzYP8WMNiogW");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
 
         wrapper.processLine("info");
-        Assert.assertNotNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNotNull();
 
         int tHash = System.identityHashCode(wrapper.result.getTransaction());
         wrapper.processLine("info");
-        Assert.assertEquals(tHash, System.identityHashCode(wrapper.result.getTransaction()));
+        assertThat(System.identityHashCode(wrapper.result.getTransaction())).isEqualTo(tHash);
         wrapper.processLine("raw");
-        Assert.assertEquals(tHash, System.identityHashCode(wrapper.result.getTransaction()));
+        assertThat(System.identityHashCode(wrapper.result.getTransaction())).isEqualTo(tHash);
         wrapper.processLine("split");
-        Assert.assertEquals(tHash, System.identityHashCode(wrapper.result.getTransaction()));
+        assertThat(System.identityHashCode(wrapper.result.getTransaction())).isEqualTo(tHash);
 
         wrapper.processLine("changeto 2MxofCZSNFE9Xo5kmtGYpMH4d4JZsThzfhN");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
         wrapper.processLine("raw");
-        Assert.assertNotEquals(tHash, System.identityHashCode(wrapper.result.getTransaction()));
+        assertThat(System.identityHashCode(wrapper.result.getTransaction())).isNotEqualTo(tHash);
 
         wrapper.processLine("from cba852f9bd2e955dfa74b87b6329de443f75f856a22bc5fa8a112267b26ecb82 1 a91456c28fde412e818d21c495ddfa675ef93b3ce3a187     2000000 cRTw5G78cen7w7P2N1jXgr1RtYq6coUjNanzmmpsFkrWU419KgiS");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
         wrapper.processLine("raw");
-        Assert.assertNotNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNotNull();
 
         wrapper.processLine("rmin 2");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
         wrapper.processLine("raw");
-        Assert.assertNotNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNotNull();
 
         wrapper.processLine("to n4qz9ie8g7hu3dGSDtBkFGh7y2C9HskrXd 12");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
         wrapper.processLine("raw");
-        Assert.assertNotNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNotNull();
 
         wrapper.processLine("rmout 2");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
         wrapper.processLine("raw");
-        Assert.assertNotNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNotNull();
 
         wrapper.processLine("fee 45");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
         wrapper.processLine("raw");
-        Assert.assertNotNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNotNull();
 
         wrapper.processLine("init testnet");
-        Assert.assertNull(wrapper.result.getTransaction());
+        assertThat(wrapper.result.getTransaction()).isNull();
     }
 }

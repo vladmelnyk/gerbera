@@ -1,11 +1,17 @@
 package sd.fomin.gerbera.transaction;
 
 import org.junit.Test;
+import sd.fomin.gerbera.constant.ErrorMessages;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class TransactionFeeValidationTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNegativeFee() {
-        TransactionBuilder.create().withFee(-1);
+        assertThatThrownBy(() -> {
+            TransactionBuilder.create().withFee(-1);
+        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.FEE_NEGATIVE);
+
     }
 }
