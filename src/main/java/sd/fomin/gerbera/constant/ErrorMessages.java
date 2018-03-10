@@ -16,6 +16,10 @@ public interface ErrorMessages {
     String OUTPUT_ADDRESS_NOT_BASE_58 = "Address must contain only base58 characters";
     String OUTPUT_ADDRESS_WRONG_PREFIX = "Only addresses starting with %s (P2PKH) or %s (P2SH) supported.";
     String OUTPUT_AMOUNT_NOT_POSITIVE = "Amount of satoshi must be a positive value";
+    String OUTPUT_DATA_IS_EMPTY = "Data must not be empty";
+    String OUTPUT_DATA_IS_NOT_HEX = "Data must hex string";
+    String OUTPUT_DATA_BYTES_HUGE = "Data size in bytes (%d) is larger than max allowed (%d).";
+    String OUTPUT_TYPE_NULL = "Output type must not be null";
     String SPK_UNSUPPORTED_PRODUCER = "Unsupported producer for [mainnet: %b, prefix: %d]";
     String FEE_NEGATIVE = "Fee must not be less than zero";
     String BASE58_WRONG_CS = "Wrong Base58 checksum";

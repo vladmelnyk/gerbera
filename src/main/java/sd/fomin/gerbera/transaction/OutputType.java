@@ -2,7 +2,7 @@ package sd.fomin.gerbera.transaction;
 
 public enum OutputType {
 
-    CUSTOM("Custom"), DONATE("Donate"), CHANGE("Change");
+    CUSTOM("Custom"), DONATE("Donate"), CHANGE("Change"), UNSPENDABLE("Unspendable");
 
     private String desc;
 

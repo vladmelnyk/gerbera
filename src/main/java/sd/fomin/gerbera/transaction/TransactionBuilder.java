@@ -57,7 +57,12 @@ public class TransactionBuilder {
     }
 
     public TransactionBuilder to(String address, long value) {
-        outputs.add(new Output(mainNet, value, address, OutputType.CUSTOM));
+        outputs.add(new RegularOutput(mainNet, value, address, OutputType.CUSTOM));
+        return this;
+    }
+
+    public TransactionBuilder put(String data, long value) {
+        outputs.add(new UnspendableOutput(data, value));
         return this;
     }
 
@@ -100,12 +105,12 @@ public class TransactionBuilder {
 
         if (donate > 0) {
             String donateAddress = mainNet ? DONATE_ADDRESS_MAINNET : DONATE_ADDRESS_TESTNET;
-            buildOutputs.add(new Output(mainNet, donate, donateAddress, OutputType.DONATE));
+            buildOutputs.add(new RegularOutput(mainNet, donate, donateAddress, OutputType.DONATE));
         }
 
         long change = getChange();
         if (change > 0) {
-            buildOutputs.add(new Output(mainNet, change, changeAddress, OutputType.CHANGE));
+            buildOutputs.add(new RegularOutput(mainNet, change, changeAddress, OutputType.CHANGE));
         }
 
         if (buildOutputs.isEmpty()) {

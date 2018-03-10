@@ -188,6 +188,44 @@ public class ConsoleBuildTest {
     }
 
     @Test
+    public void testUnspendableOutputsTestnet() {
+        String expectedRaw =
+                "010000000001020c02e971ae855b475ee5afad684df32d8515d91804cc467b8d" +
+                "158191907783860100000017160014edb88011930f1942cbab092af686ec4d56" +
+                "112dd9ffffffff0c02e971ae855b475ee5afad684df32d8515d91804cc467b8d" +
+                "15819190778386000000008a473044022030a84f1a9f6a02c4fc44943220a3b4" +
+                "eb836790ef4db7a2422365f394437e7a0002203fc9ac0260a5c90024a478c4b0" +
+                "561596faa7b7ffbb02f0c6e10f567e94710da0014104fa2930f592b01cd790e5" +
+                "2fa489f5ab6f86e7a53eb3a1a1eb2b2dc39e6b0f5bde64e93459095fa1c67468" +
+                "6c01a52052d7bef6b0c2e4a138f8b04da8438bfb95a1ffffffff051027000000" +
+                "0000001976a914b35177f3cb8cf72e67d2fc16e3641afdc79b2a3a88ac102700" +
+                "000000000017a9145d9e15edffe678dd7f793ee60ac7cd64afa4a1c487102700" +
+                "0000000000186a1647657262657261204f505f52455455524e20746573740100" +
+                "0000000000000e6a0c416e6420697420776f726b73ff7002000000000017a914" +
+                "a9974100aeee974a20cda9a2f545704a0ab54fdc87024730440220080a8e8dbf" +
+                "870a060daad725e79a79700e6bcf7f282d98f837cc94ebdd58111f02206dbba0" +
+                "4e64b619153504e1c163417ccb5c714485f7b639970b0c43b8c6dff5bd012103" +
+                "fa2930f592b01cd790e52fa489f5ab6f86e7a53eb3a1a1eb2b2dc39e6b0f5bde" +
+                "0000000000";
+
+        BuildWrapper wrapper = new BuildWrapper();
+
+        wrapper.processLine("init testnet");
+        wrapper.processLine("from 868377909181158d7b46cc0418d915852df34d68adafe55e475b85ae71e9020c 1 a91453efc637f287f6ef92e2be6b4dd77846549f65c887 100000 cRFLf7mGxAwahwoYactPb9Y9qgK3txSWuG7ru5EqvGywcviZTGDv");
+        wrapper.processLine("from 868377909181158d7b46cc0418d915852df34d68adafe55e475b85ae71e9020c 0 76a914e14eb9ffe68a71cbfeea8dadc94e27159dc9901988ac 100000 92R6MsUFVMqAT3SxBnjuhMxzjkLx2oYcKdxUcpBPQrPRA9KKaz7");
+        wrapper.processLine("to mws6qvhiQpjumr6nWdZYeP8fjEzjzd8tAx 10000");
+        wrapper.processLine("to 2N1nED7FaJh6digy5a7J5xhG6oarpWMdCTR 10000");
+        wrapper.processLine("changeto 2N8hwP1WmJrFF5QWABn38y63uYLhnJYJYTF");
+        wrapper.processLine("withfee 10000");
+        wrapper.processLine("put 001122334455 10000");
+        wrapper.processLine("put 47657262657261204f505f52455455524e2074657374 10000");
+        wrapper.processLine("rmout 3");
+        wrapper.processLine("put 416e6420697420776f726b73 1");
+
+        assertThat(wrapper.result.getBuilder().build().getRawTransaction()).isEqualTo(expectedRaw);
+    }
+
+    @Test
     public void cachedTransactionTest() {
         BuildWrapper wrapper = new BuildWrapper();
         assertThat(wrapper.result.getTransaction()).isNull();

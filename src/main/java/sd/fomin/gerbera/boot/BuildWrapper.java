@@ -13,6 +13,7 @@ public class BuildWrapper {
         add(new InitProcessor());
         add(new FromProcessor());
         add(new ToProcessor());
+        add(new PutDataProcessor());
         add(new ChangeToProcessor());
         add(new WithFeeProcessor());
         add(new DonateProcessor());

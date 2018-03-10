@@ -12,8 +12,9 @@
     * `P2SH-P2WPKH` segwit outputs (3-Addresses)
 * Signature types
     * `SIGHASH_ALL`
-* Multiple inputs from different addresses (signed with different keys)
-* Multiple outputs
+* Multiple inputs from different addresses (signed with different keys) in one transaction
+* Multiple outputs in one transaction
+* Unspendable outputs with `OP_RETURN` (To put arbitrary data into blockchain)
 * Networks
     * MainNet
     * TestNet
@@ -107,6 +108,32 @@ $ to 1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1 10000
 ```
 
 Transaction may contain multiple inputs and multiple outputs at the same time.
+
+### Put arbitrary data in transaction with OP_RETURN
+
+Arbitrary data may be placed into transaction with Bitcoin built-in unspendable outputs functionality utilizing OP_RETURN.
+
+To create unspendable outputs use:
+#### As library
+```java
+Transaction transaction = TransactionBuilder.create(false)
+        ...
+        .put("48656c6c6f", 1000) // 'Hello' UTF-8 bytes
+        .put("576f726c64", 1000) // 'World' UTF-8 bytes
+        ...
+        .build();
+```
+
+This will add two additional unspendable outputs to a transactions.
+
+#### Command line tool
+
+```sh
+$ ...
+$ put 48656c6c6f 1000
+$ put 576f726c64 1000
+$ ...
+```
 
 ### Build transaction for TestNet
 #### As library

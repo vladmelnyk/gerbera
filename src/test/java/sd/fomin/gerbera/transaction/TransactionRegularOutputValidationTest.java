@@ -5,7 +5,7 @@ import sd.fomin.gerbera.constant.ErrorMessages;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class TransactionOutputValidationTest {
+public class TransactionRegularOutputValidationTest {
 
     @Test
     public void testNullDestination() {
@@ -73,6 +73,5 @@ public class TransactionOutputValidationTest {
         assertThatCode(() -> {
             TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
         }).doesNotThrowAnyException();
-
     }
 }

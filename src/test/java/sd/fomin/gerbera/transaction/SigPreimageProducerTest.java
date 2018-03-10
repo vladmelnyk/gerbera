@@ -27,8 +27,8 @@ public class SigPreimageProducerTest {
                         "cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7")
         );
         List<Output> outputs = Arrays.asList(
-                new Output(false,5, "mmcgtfjqG1sMvZjzEupfufSqehgzngcqFo", OutputType.CUSTOM),
-                new Output(false,10, "2MxofCZSNFE9Xo5kmtGYpMH4d4JZsThzfhN", OutputType.CUSTOM)
+                new RegularOutput(false,5, "mmcgtfjqG1sMvZjzEupfufSqehgzngcqFo", OutputType.CUSTOM),
+                new RegularOutput(false,10, "2MxofCZSNFE9Xo5kmtGYpMH4d4JZsThzfhN", OutputType.CUSTOM)
         );
         byte[] preimage = SigPreimageProducer.getInstance(false).producePreimage(inputs, outputs, 0);
         String expected =
@@ -69,8 +69,8 @@ public class SigPreimageProducerTest {
                         "cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7")
         );
         List<Output> outputs = Arrays.asList(
-                new Output(false,5, "mmcgtfjqG1sMvZjzEupfufSqehgzngcqFo", OutputType.CUSTOM),
-                new Output(false,10, "2MxofCZSNFE9Xo5kmtGYpMH4d4JZsThzfhN", OutputType.CUSTOM)
+                new RegularOutput(false,5, "mmcgtfjqG1sMvZjzEupfufSqehgzngcqFo", OutputType.CUSTOM),
+                new RegularOutput(false,10, "2MxofCZSNFE9Xo5kmtGYpMH4d4JZsThzfhN", OutputType.CUSTOM)
         );
         byte[] preimage = SigPreimageProducer.getInstance(true).producePreimage(inputs, outputs, 1);
         String expected =

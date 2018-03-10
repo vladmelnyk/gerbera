@@ -6,6 +6,8 @@ import sd.fomin.gerbera.crypto.PrivateKey;
 import sd.fomin.gerbera.util.ApplicationRandom;
 import sd.fomin.gerbera.util.HexUtils;
 
+import java.nio.charset.StandardCharsets;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class WitnessProducerTest {
@@ -43,5 +45,10 @@ public class WitnessProducerTest {
         PrivateKey key = PrivateKey.ofWif(false, "cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
         byte[] witness = WitnessProducer.getInstance(false).produceWitness(sigHash, key);
         assertThat(witness).isEqualTo(new byte[] {0x00});
+    }
+
+    @Test
+    public void test() {
+        System.out.println(HexUtils.asString("Hello World".getBytes(StandardCharsets.UTF_8)));
     }
 }

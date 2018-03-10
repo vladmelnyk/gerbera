@@ -1,36 +1,21 @@
 package sd.fomin.gerbera.transaction;
 
 import sd.fomin.gerbera.constant.ErrorMessages;
-import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.types.ULong;
 import sd.fomin.gerbera.types.VarInt;
-import sd.fomin.gerbera.util.Base58CheckUtils;
+import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.util.HexUtils;
 
-import java.util.Arrays;
-import java.util.List;
+public abstract class Output {
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static sd.fomin.gerbera.util.ValidationUtils.isBase58;
-import static sd.fomin.gerbera.util.ValidationUtils.isEmpty;
+    protected final OutputType type;
+    protected final long satoshi;
 
-class Output {
+    protected Output(OutputType type, long satoshi) {
+        validateData(type, satoshi);
 
-    private final boolean mainNet;
-    private final long satoshi;
-    private final String destination;
-    private final OutputType type;
-    private final byte[] decodedAddress;
-
-    Output(boolean mainNet, long satoshi, String destination, OutputType type) {
-        validateOutputData(mainNet, satoshi, destination);
-
-        this.mainNet = mainNet;
-        this.satoshi = satoshi;
-        this.destination = destination;
         this.type = type;
-        this.decodedAddress = Base58CheckUtils.decode(destination);
+        this.satoshi = satoshi;
     }
 
     byte[] serializeForSigHash() {
@@ -54,46 +39,19 @@ class Output {
         transaction.addData("      Lock", HexUtils.asString(lockingScript));
     }
 
+    protected abstract byte[] getLockingScript();
+
     long getSatoshi() {
         return satoshi;
     }
 
-    @Override
-    public String toString() {
-        return destination + " " + satoshi;
-    }
-
-    private byte[] getLockingScript() {
-        return ScriptPubKeyProducer.getInstance(mainNet, decodedAddress[0])
-                .produceScript(Arrays.copyOfRange(decodedAddress, 1, decodedAddress.length));
-    }
-
-    private void validateOutputData(boolean mainNet, long satoshi, String destination) {
-        validateDestinationAddress(mainNet, destination);
-        validateAmount(satoshi);
-    }
-
-    private void validateAmount(long satoshi) {
+    private void validateData(OutputType type, long satoshi) {
+        if (type == null) {
+            throw new IllegalArgumentException(ErrorMessages.OUTPUT_TYPE_NULL);
+        }
         if (satoshi <= 0) {
             throw new IllegalArgumentException(ErrorMessages.OUTPUT_AMOUNT_NOT_POSITIVE);
         }
     }
 
-    private void validateDestinationAddress(boolean mainNet, String destination) {
-        if (isEmpty(destination)) {
-            throw new IllegalArgumentException(ErrorMessages.OUTPUT_ADDRESS_EMPTY);
-        }
-
-        if (!isBase58(destination)) {
-            throw new IllegalArgumentException(ErrorMessages.OUTPUT_ADDRESS_NOT_BASE_58);
-        }
-
-        List<Character> prefixP2PKH = mainNet ? singletonList('1') : asList('m', 'n');
-        List<Character> prefixP2SH = singletonList(mainNet ? '3' : '2');
-        char prefix = destination.charAt(0);
-
-        if (!prefixP2PKH.contains(prefix) && !prefixP2SH.contains(prefix)) {
-            throw new IllegalArgumentException(String.format(ErrorMessages.OUTPUT_ADDRESS_WRONG_PREFIX, prefixP2PKH, prefixP2SH));
-        }
-    }
 }
