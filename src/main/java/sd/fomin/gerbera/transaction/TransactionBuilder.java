@@ -47,6 +47,11 @@ public class TransactionBuilder {
         return this;
     }
 
+    public TransactionBuilder from(String fromTransactionBigEnd, int fromToutNumber, String closingScript, long satoshi, String wif, Boolean replaceable) {
+        inputs.add(new Input(mainNet, fromTransactionBigEnd, fromToutNumber, closingScript, satoshi, wif, replaceable));
+        return this;
+    }
+
     public TransactionBuilder rmInputAt(int i) {
         int index = i - 1;
         if (index < 0 || index >= inputs.size()) {
