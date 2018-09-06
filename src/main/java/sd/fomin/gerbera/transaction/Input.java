@@ -12,7 +12,7 @@ import static sd.fomin.gerbera.util.ValidationUtils.*;
 
 class Input {
 
-    private static final UInt SEQUENCE = UInt.of(0xFFFFFFFF);
+    private static final UInt SEQUENCE_IRREPLACEABLE = UInt.of(0xFFFFFFFF);
     private static final UInt SEQUENCE_REPLACEABLE = UInt.of(0xFFFFFFFF - 2);
 
     private final String transaction;
@@ -21,7 +21,7 @@ class Input {
     private final long satoshi;
     private final String wif;
     private final PrivateKey privateKey;
-    private final Boolean replaceable;
+    private final UInt sequence;
 
     Input(boolean mainNet, String transaction, int index, String lock, long satoshi, String wif) {
         validateInputData(transaction, index, lock, satoshi, wif);
@@ -32,7 +32,7 @@ class Input {
         this.satoshi = satoshi;
         this.wif = wif;
         this.privateKey = PrivateKey.ofWif(mainNet, wif);
-        this.replaceable = false;
+        this.sequence = SEQUENCE_IRREPLACEABLE;
     }
 
     Input(boolean mainNet, String transaction, int index, String lock, long satoshi, String wif, Boolean replaceable) {
@@ -44,7 +44,11 @@ class Input {
         this.satoshi = satoshi;
         this.wif = wif;
         this.privateKey = PrivateKey.ofWif(mainNet, wif);
-        this.replaceable = replaceable;
+        if (replaceable) {
+            sequence = SEQUENCE_REPLACEABLE;
+        } else {
+            sequence = SEQUENCE_IRREPLACEABLE;
+        }
     }
 
     void fillTransaction(byte[] sigHash, Transaction transaction) {
@@ -57,11 +61,7 @@ class Input {
         transaction.addData("      Tout index", UInt.of(index).toString());
         transaction.addData("      Unlock length", HexUtils.asString(VarInt.of(unlocking.length).asLitEndBytes()));
         transaction.addData("      Unlock", HexUtils.asString(unlocking));
-        if (replaceable) {
-            transaction.addData("      Sequence", SEQUENCE_REPLACEABLE.toString());
-        } else {
-            transaction.addData("      Sequence", SEQUENCE.toString());
-        }
+        transaction.addData("      Sequence", sequence.toString());
     }
 
     byte[] getWitness(byte[] sigHash) {
@@ -93,7 +93,7 @@ class Input {
     }
 
     UInt getSequence() {
-        return SEQUENCE;
+        return sequence;
     }
 
     @Override
