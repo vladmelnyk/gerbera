@@ -1,11 +1,11 @@
 package sd.fomin.gerbera.transaction;
 
 import sd.fomin.gerbera.constant.ErrorMessages;
-import sd.fomin.gerbera.types.OpSize;
-import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.crypto.PrivateKey;
+import sd.fomin.gerbera.types.OpSize;
 import sd.fomin.gerbera.types.UInt;
 import sd.fomin.gerbera.types.VarInt;
+import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.util.HexUtils;
 
 import static sd.fomin.gerbera.util.ValidationUtils.*;
@@ -13,6 +13,7 @@ import static sd.fomin.gerbera.util.ValidationUtils.*;
 class Input {
 
     private static final UInt SEQUENCE = UInt.of(0xFFFFFFFF);
+    private static final UInt SEQUENCE_REPLACEABLE = UInt.of(0xFFFFFFFF - 2);
 
     private final String transaction;
     private final int index;
@@ -20,6 +21,7 @@ class Input {
     private final long satoshi;
     private final String wif;
     private final PrivateKey privateKey;
+    private final Boolean replaceable;
 
     Input(boolean mainNet, String transaction, int index, String lock, long satoshi, String wif) {
         validateInputData(transaction, index, lock, satoshi, wif);
@@ -30,6 +32,19 @@ class Input {
         this.satoshi = satoshi;
         this.wif = wif;
         this.privateKey = PrivateKey.ofWif(mainNet, wif);
+        this.replaceable = false;
+    }
+
+    Input(boolean mainNet, String transaction, int index, String lock, long satoshi, String wif, Boolean replaceable) {
+        validateInputData(transaction, index, lock, satoshi, wif);
+
+        this.transaction = transaction;
+        this.index = index;
+        this.lock = lock;
+        this.satoshi = satoshi;
+        this.wif = wif;
+        this.privateKey = PrivateKey.ofWif(mainNet, wif);
+        this.replaceable = replaceable;
     }
 
     void fillTransaction(byte[] sigHash, Transaction transaction) {
@@ -42,7 +57,11 @@ class Input {
         transaction.addData("      Tout index", UInt.of(index).toString());
         transaction.addData("      Unlock length", HexUtils.asString(VarInt.of(unlocking.length).asLitEndBytes()));
         transaction.addData("      Unlock", HexUtils.asString(unlocking));
-        transaction.addData("      Sequence", SEQUENCE.toString());
+        if (replaceable) {
+            transaction.addData("      Sequence", SEQUENCE_REPLACEABLE.toString());
+        } else {
+            transaction.addData("      Sequence", SEQUENCE.toString());
+        }
     }
 
     byte[] getWitness(byte[] sigHash) {
