@@ -14,7 +14,7 @@ public interface ErrorMessages {
     String INPUT_WIF_NOT_BASE_58 = "WIF must contain only base58 characters";
     String OUTPUT_ADDRESS_EMPTY = "Address must not be null or empty";
     String OUTPUT_ADDRESS_NOT_BASE_58 = "Address must contain only base58 characters";
-    String OUTPUT_ADDRESS_WRONG_PREFIX = "Only addresses starting with %s (P2PKH) or %s (P2SH) supported.";
+    String OUTPUT_ADDRESS_WRONG_PREFIX = "Only addresses starting with %s (P2PKH) or %s (P2SH) or %s (Bech32) supported.";
     String OUTPUT_AMOUNT_NOT_POSITIVE = "Amount of satoshi must be a positive value";
     String OUTPUT_DATA_IS_EMPTY = "Data must not be empty";
     String OUTPUT_DATA_IS_NOT_HEX = "Data must hex string";

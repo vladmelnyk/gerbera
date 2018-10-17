@@ -1,10 +1,8 @@
 package sd.fomin.gerbera.transaction;
 
-import sd.fomin.gerbera.constant.ErrorMessages;
 import sd.fomin.gerbera.constant.OpCodes;
 import sd.fomin.gerbera.types.OpSize;
 import sd.fomin.gerbera.util.ByteBuffer;
-import sd.fomin.gerbera.util.HexUtils;
 
 public interface ScriptPubKeyProducer {
 
@@ -31,9 +29,20 @@ public interface ScriptPubKeyProducer {
                 lockingScript.append(OpCodes.EQUAL);
                 return lockingScript.bytes();
             };
+            //TODO Provide appropriate condition to verify P2WSH
+        } else {
+            //P2WSH & P2WKH
+            return hash -> {
+                ByteBuffer lockingScript = new ByteBuffer();
+                lockingScript.append(OpCodes.FALSE);
+                lockingScript.append(OpSize.ofInt(hash.length).getSize());
+                lockingScript.append(hash);
+
+                return lockingScript.bytes();
+            };
         }
 
-        throw new IllegalArgumentException(String.format(ErrorMessages.SPK_UNSUPPORTED_PRODUCER, mainNet, prefix));
+//        throw new IllegalArgumentException(String.format(ErrorMessages.SPK_UNSUPPORTED_PRODUCER, mainNet, prefix));
     }
 
 }

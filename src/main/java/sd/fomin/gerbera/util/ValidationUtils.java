@@ -16,6 +16,10 @@ public class ValidationUtils {
         return string.matches("[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+");
     }
 
+    public static boolean isBech32(String string) {
+        return string.matches("^(bc1|tb1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$");
+    }
+
     public static boolean isEmpty(String string) {
         return string == null || string.trim().isEmpty();
     }
