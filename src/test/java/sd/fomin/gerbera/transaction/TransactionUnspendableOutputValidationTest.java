@@ -41,12 +41,6 @@ public class TransactionUnspendableOutputValidationTest {
         }).isInstanceOf(IllegalArgumentException.class).hasMessage(String.format(ErrorMessages.OUTPUT_DATA_BYTES_HUGE, 41, 40));
     }
 
-    @Test
-    public void testZeroSatochi() {
-        assertThatThrownBy(() -> {
-            TransactionBuilder.create().put("1234567890", 0);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OUTPUT_AMOUNT_NOT_POSITIVE);
-    }
 
     @Test
     public void testNegativeSatochi() {

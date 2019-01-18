@@ -49,7 +49,7 @@ public abstract class Output {
         if (type == null) {
             throw new IllegalArgumentException(ErrorMessages.OUTPUT_TYPE_NULL);
         }
-        if (satoshi <= 0) {
+        if (satoshi < 0) {
             throw new IllegalArgumentException(ErrorMessages.OUTPUT_AMOUNT_NOT_POSITIVE);
         }
     }

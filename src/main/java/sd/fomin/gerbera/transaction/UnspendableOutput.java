@@ -25,6 +25,16 @@ public class UnspendableOutput extends Output {
         this.dataBytes = HexUtils.asBytes(data);
     }
 
+    public UnspendableOutput(String data) {
+        super(OutputType.UNSPENDABLE, 0L);
+
+        validateData(data);
+
+        this.data = data;
+        this.satoshi = 0L;
+        this.dataBytes = HexUtils.asBytes(data);
+    }
+
     long getSatoshi() {
         return satoshi;
     }
