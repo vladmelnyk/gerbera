@@ -55,4 +55,11 @@ public class TransactionUnspendableOutputValidationTest {
             TransactionBuilder.create().put("1234567890", 10);
         }).doesNotThrowAnyException();
     }
+
+    @Test
+    public void testCorrectNullOutput() {
+        assertThatCode(() -> {
+            TransactionBuilder.create().putNullUnspendableOutput("1234567890");
+        }).doesNotThrowAnyException();
+    }
 }

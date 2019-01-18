@@ -71,6 +71,11 @@ public class TransactionBuilder {
         return this;
     }
 
+    public TransactionBuilder putNullUnspendableOutput(String data) {
+        outputs.add(new UnspendableOutput(data));
+        return this;
+    }
+
     public TransactionBuilder rmOutputAt(int i) {
         int index = i - 1;
         if (index < 0 || index >= outputs.size()) {
