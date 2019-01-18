@@ -1,5 +1,5 @@
 group 'sd.fomin'
-version '1.5.2'
+version '1.5.1'
 
 apply plugin: 'java'
 
