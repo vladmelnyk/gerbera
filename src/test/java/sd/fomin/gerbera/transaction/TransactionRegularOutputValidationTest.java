@@ -55,13 +55,6 @@ public class TransactionRegularOutputValidationTest {
     }
 
     @Test
-    public void testZeroSatochi() {
-        assertThatThrownBy(() -> {
-            TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 0);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OUTPUT_AMOUNT_NOT_POSITIVE);
-    }
-
-    @Test
     public void testNegativeSatochi() {
         assertThatThrownBy(() -> {
             TransactionBuilder.create().to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", -1);
