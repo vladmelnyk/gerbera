@@ -287,6 +287,41 @@ public class RawTransactionTest {
         check(expectedRaw, builder);
     }
 
+    @Test
+    public void testNoChangeOutputForSmallChange() {
+        String expectedRaw =
+                "01000000027fa41e3f7f2985eb88be91f7f0257cf6c7522258efa87f10cf883d71e5a65ab9000000" +
+                        "008a4730440220080a8e8dbf870a060daad725e79a79700e6bcf7f282d98f837cc94ebdd58111f02" +
+                        "205ca6eae6905a5a20734dbdbda82785ee8cfcf9c9df6846648fdaecd1a1fae15d014104c1029aa08c5e72d09228d9b" +
+                        "b90ae48888a6955f79ec052753a81dfd049f39bb75f8b7142bf86c237a3a5e5892358b5a9c6a393c47a0db5bf48d36859f1a" +
+                        "68dc1ffffffff7fa41e3f7f2985eb88be91f7f0257cf6c7522258efa87f10cf883d71e5a65ab9010000008b483045022100c3b" +
+                        "d4651cb467dc8901445e611e17f7c73038507430bb07aea386a80c93cfdc90220698ed6c119ea2ddd77be6b486acaa3cc2cd4" +
+                        "367ff2ec6d2f1d028c976d431234014104c1029aa08c5e72d09228d9bb90ae48888a6955f79ec052753a81dfd049f39bb75f8" +
+                        "b7142bf86c237a3a5e5892358b5a9c6a393c47a0db5bf48d36859f1a68dc1ffffffff012202000" +
+                        "0000000001976a914b35177f3cb8cf72e67d2fc16e3641afdc79b2a3a88ac00000000";
+
+        TransactionBuilder builder = TransactionBuilder.create(false)
+                .from(
+                        "b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f",
+                        0,
+                        "76a9140af1ae78875d89840db368c013e9938468a493db88ac",
+                        546,
+                        "93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX"
+                )
+                .from(
+                        "b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f",
+                        1,
+                        "76a9140af1ae78875d89840db368c013e9938468a493db88ac",
+                        546,
+                        "93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX"
+                )
+                .to("mws6qvhiQpjumr6nWdZYeP8fjEzjzd8tAx", 546)
+                .changeTo("2N8hwP1WmJrFF5QWABn38y63uYLhnJYJYTF")
+                .withFee(200);
+
+        check(expectedRaw, builder);
+    }
+
     private void check(String expectedRaw, TransactionBuilder builder) {
         Transaction transaction = builder.build();
         assertThat(transaction.getRawTransaction()).isEqualTo(expectedRaw);

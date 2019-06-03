@@ -20,6 +20,7 @@ public class TransactionBuilder {
     private static final byte SEGWIT_MARKER = (byte) 0x00;
     private static final byte SEGWIT_FLAG = (byte) 0x01;
     private static final UInt LOCK_TIME = UInt.of(0);
+    private static final Integer BTC_DUST_AMOUNT = 546;
 
     private final boolean mainNet;
 
@@ -119,7 +120,7 @@ public class TransactionBuilder {
         }
 
         long change = getChange();
-        if (change > 0) {
+        if (change >= BTC_DUST_AMOUNT) {
             buildOutputs.add(new RegularOutput(mainNet, change, changeAddress, OutputType.CHANGE));
         }
 
