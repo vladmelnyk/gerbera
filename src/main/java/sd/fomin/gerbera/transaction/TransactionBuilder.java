@@ -186,7 +186,7 @@ public class TransactionBuilder {
                     ". All outputs with fee: " + (outcome + fee));
         }
 
-        if (change > 0 && changeAddress == null) {
+        if (change > BTC_DUST_AMOUNT && changeAddress == null) {
             throw new IllegalStateException("Transaction contains change (" + change + " satoshi) but no address to send them to");
         }
 
