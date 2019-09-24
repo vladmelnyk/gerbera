@@ -5,7 +5,7 @@ import sd.fomin.gerbera.constant.OpCodes;
 import sd.fomin.gerbera.util.HexUtils;
 
 public enum LockScriptType {
-    P2PKH(false), P2SH(true);
+    P2PKH(false), P2SH(true), P2WPKH(true);
 
     private final boolean segWit;
 
@@ -23,6 +23,8 @@ public enum LockScriptType {
             return P2PKH;
         } else if (isP2SH(lockBytes)) {
             return P2SH;
+        } else if (isP2WPKH(lockBytes)) {
+            return P2WPKH;
         } else {
             throw new IllegalArgumentException(String.format(ErrorMessages.INPUT_LOCK_WRONG_FORMAT, lock));
         }
@@ -38,5 +40,9 @@ public enum LockScriptType {
                 && lockBytes[1] == OpCodes.HASH160
                 && lockBytes[lockBytes.length - 2] == OpCodes.EQUALVERIFY
                 && lockBytes[lockBytes.length - 1] == OpCodes.CHECKSIG;
+    }
+
+    private static boolean isP2WPKH(byte[] lockBytes) {
+        return lockBytes[0] == OpCodes.FALSE;
     }
 }

@@ -56,7 +56,7 @@ class Input {
 
         transaction.addHeader(segWit ? "   Input (Segwit)" : "   Input");
 
-        byte[] unlocking = ScriptSigProducer.getInstance(segWit).produceScriptSig(sigHash, privateKey);
+        byte[] unlocking = ScriptSigProducer.getInstance(LockScriptType.forLock(lock)).produceScriptSig(sigHash, privateKey);
         transaction.addData("      Transaction out", HexUtils.asString(getTransactionHashBytesLitEnd()));
         transaction.addData("      Tout index", UInt.of(index).toString());
         transaction.addData("      Unlock length", HexUtils.asString(VarInt.of(unlocking.length).asLitEndBytes()));
@@ -146,6 +146,12 @@ class Input {
             byte[] lockBytes = HexUtils.asBytes(lock);
             OpSize pubKeyHashSize = OpSize.ofByte(lockBytes[1]);
             if (pubKeyHashSize.getSize() != lockBytes.length - 3) {
+                throw new IllegalArgumentException(String.format(ErrorMessages.INPUT_WRONG_RS_SIZE, lock));
+            }
+        } else if (LockScriptType.P2WPKH.equals(lockScriptType)) {
+            byte[] lockBytes = HexUtils.asBytes(lock);
+            OpSize pubKeyHashSize = OpSize.ofByte(lockBytes[1]);
+            if (pubKeyHashSize.getSize() != lockBytes.length - 2) {
                 throw new IllegalArgumentException(String.format(ErrorMessages.INPUT_WRONG_RS_SIZE, lock));
             }
         } else {

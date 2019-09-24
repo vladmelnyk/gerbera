@@ -11,34 +11,41 @@ public interface ScriptSigProducer {
 
     byte[] produceScriptSig(byte[] sigHash, PrivateKey key);
 
-    static ScriptSigProducer getInstance(boolean segwit) {
-        if (segwit) {
-            return (sigHash, key) -> {
-                ByteBuffer result = new ByteBuffer();
+    static ScriptSigProducer getInstance(LockScriptType lockScriptType) {
+        switch (lockScriptType) {
+            case P2SH: {
+                return (sigHash, key) -> {
+                    ByteBuffer result = new ByteBuffer();
 
-                result.append(OpCodes.FALSE);
-                result.append((byte) 0x14); //ripemd160 size
-                result.append(HashUtils.ripemd160(HashUtils.sha256(key.getPublicKey())));
-                result.putFirst(OpSize.ofInt(result.size()).getSize()); //PUSH DATA
+                    result.append(OpCodes.FALSE);
+                    result.append((byte) 0x14); //ripemd160 size
+                    result.append(HashUtils.ripemd160(HashUtils.sha256(key.getPublicKey())));
+                    result.putFirst(OpSize.ofInt(result.size()).getSize()); //PUSH DATA
 
-                return result.bytes();
-            };
-        } else {
-            return (sigHash, key) -> {
-                ByteBuffer result = new ByteBuffer();
+                    return result.bytes();
+                };
+            }
+            case P2PKH: {
+                return (sigHash, key) -> {
+                    ByteBuffer result = new ByteBuffer();
 
-                result.append(key.sign(sigHash));
-                result.append(SigHashType.ALL.asByte());
+                    result.append(key.sign(sigHash));
+                    result.append(SigHashType.ALL.asByte());
 
-                result.putFirst(OpSize.ofInt(result.size()).getSize());
+                    result.putFirst(OpSize.ofInt(result.size()).getSize());
 
-                byte[] publicKey = key.getPublicKey();
-                result.append(OpSize.ofInt(publicKey.length).getSize());
-                result.append(publicKey);
+                    byte[] publicKey = key.getPublicKey();
+                    result.append(OpSize.ofInt(publicKey.length).getSize());
+                    result.append(publicKey);
 
-                return result.bytes();
-            };
+                    return result.bytes();
+                };
+            }
+            case P2WPKH: {
+                return (sigHash, key) -> new ByteBuffer().bytes();
+            }
+            default:
+                return (sigHash, key) -> new ByteBuffer().bytes(); //empty scriptSig by default?
         }
-
     }
 }
