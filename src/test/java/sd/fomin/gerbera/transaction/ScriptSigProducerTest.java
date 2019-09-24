@@ -19,7 +19,7 @@ public class ScriptSigProducerTest {
     public void testSegwit() {
         byte[] sigHash = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04};
         PrivateKey key = PrivateKey.ofWif(false, "cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
-        byte[] script = ScriptSigProducer.getInstance(true).produceScriptSig(sigHash, key);
+        byte[] script = ScriptSigProducer.getInstance(LockScriptType.P2SH).produceScriptSig(sigHash, key);
         String expected =
                 "16" +
                 "00" +
@@ -32,7 +32,7 @@ public class ScriptSigProducerTest {
     public void testRegular() {
         byte[] sigHash = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04};
         PrivateKey key = PrivateKey.ofWif(false, "cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
-        byte[] script = ScriptSigProducer.getInstance(false).produceScriptSig(sigHash, key);
+        byte[] script = ScriptSigProducer.getInstance(LockScriptType.P2PKH).produceScriptSig(sigHash, key);
         String expected =
                 "48" +
                 "30" +

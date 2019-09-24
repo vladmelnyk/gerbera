@@ -34,7 +34,7 @@ public class TransactionRegularOutputValidationTest {
             TransactionBuilder.create().to("2NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
         })
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(String.format(ErrorMessages.OUTPUT_ADDRESS_WRONG_PREFIX, "[1]", "[3]"));
+                .hasMessage(String.format(ErrorMessages.OUTPUT_ADDRESS_WRONG_PREFIX, "[1]", "[3]", "[b, c]"));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class TransactionRegularOutputValidationTest {
             TransactionBuilder.create(false).to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
         })
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(String.format(ErrorMessages.OUTPUT_ADDRESS_WRONG_PREFIX, "[m, n]", "[2]"));
+                .hasMessage(String.format(ErrorMessages.OUTPUT_ADDRESS_WRONG_PREFIX, "[m, n]", "[2]", "[t, b]"));
     }
 
     @Test

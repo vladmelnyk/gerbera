@@ -11,7 +11,7 @@ public class Bech32CheckUtils {
     }
 
     public static byte[] decode(final String bech32) {
-        var lowerCaseBech = bech32.toLowerCase();
+        String lowerCaseBech = bech32.toLowerCase();
         int prefixPos = lowerCaseBech.lastIndexOf("1");
 
         byte[] humanReadablePrefix = lowerCaseBech.substring(0, prefixPos).getBytes();
