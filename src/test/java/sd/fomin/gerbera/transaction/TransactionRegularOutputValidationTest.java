@@ -3,7 +3,9 @@ package sd.fomin.gerbera.transaction;
 import org.junit.Test;
 import sd.fomin.gerbera.constant.ErrorMessages;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertNotNull;
 
 public class TransactionRegularOutputValidationTest {
 
@@ -26,6 +28,16 @@ public class TransactionRegularOutputValidationTest {
         assertThatThrownBy(() -> {
             TransactionBuilder.create().to("1NZUP3JAc9JkmbvlmoTv7nVgZGtyJjirKV1", 1);
         }).isInstanceOf(IllegalArgumentException.class).hasMessage(ErrorMessages.OUTPUT_ADDRESS_NOT_BASE_58);
+    }
+
+    @Test
+    public void testBech32TestnetDestination() {
+        assertNotNull(TransactionBuilder.create(false).to("tb1q3wrc5yq9c300jxlfeg7ae76tk9gsx044ucyg7a", 1));
+    }
+
+    @Test
+    public void testBech32MainnetDestination() {
+        assertNotNull(TransactionBuilder.create().to("bc1qd6h6vp99qwstk3z668md42q0zc44vpwkk824zh", 1));
     }
 
     @Test

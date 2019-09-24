@@ -53,7 +53,7 @@ class RegularOutput extends Output {
             throw new IllegalArgumentException(ErrorMessages.OUTPUT_ADDRESS_EMPTY);
         }
 
-        if (!isBase58(destination)) {
+        if (!isBase58(destination) && !isBech32(destination)) {
             throw new IllegalArgumentException(ErrorMessages.OUTPUT_ADDRESS_NOT_BASE_58);
         }
 
