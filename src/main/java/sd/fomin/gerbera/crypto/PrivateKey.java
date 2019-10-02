@@ -29,7 +29,7 @@ public class PrivateKey {
         boolean compressed = false;
 
         byte prefix = mainNet ? (byte) 0x80 : (byte) 0xEF;
-        byte prefixLtcprefixLtc = mainNet ? (byte) 0x50 : (byte) 0xEF;
+        byte prefixLtcprefixLtc = mainNet ? (byte) -0x50 : (byte) 0xEF;
         byte[] decoded = Base58CheckUtils.decode(wif);
         if (!asList(prefix, prefixLtcprefixLtc).contains(decoded[0])) {
             throw new IllegalArgumentException("Decoded WIF must start with 0x" + HexUtils.asString(prefix) + " byte");
