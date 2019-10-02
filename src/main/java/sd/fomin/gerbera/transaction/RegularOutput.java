@@ -57,9 +57,9 @@ class RegularOutput extends Output {
             throw new IllegalArgumentException(ErrorMessages.OUTPUT_ADDRESS_NOT_BASE_58);
         }
 
-        List<Character> prefixP2PKH = mainNet ? singletonList('1') : asList('m', 'n');
+        List<Character> prefixP2PKH = mainNet ? asList('1', 'L', 'M') : asList('m', 'n');
         List<Character> prefixP2SH = singletonList(mainNet ? '3' : '2');
-        List<Character> prefixBech32 = mainNet ? asList('b', 'c') : asList('t', 'b');
+        List<Character> prefixBech32 = mainNet ? asList('b', 'c', 'l') : asList('t', 'b');
 
         char prefix = destination.charAt(0);
         if (!prefixP2PKH.contains(prefix) && !prefixP2SH.contains(prefix) && !prefixBech32.contains(prefix)) {

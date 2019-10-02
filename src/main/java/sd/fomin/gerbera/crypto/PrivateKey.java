@@ -52,7 +52,7 @@ public class PrivateKey {
 
     private static void validateWifFormat(boolean mainNet, String wif) {
         List<Character> prefixWif = singletonList(mainNet ? '5' : '9');
-        List<Character> prefixWifComp = mainNet ? asList('K', 'L') : singletonList('c');
+        List<Character> prefixWifComp = mainNet ? asList('K', 'L', 'T') : singletonList('c');
         char prefix = wif.charAt(0);
 
         if (!prefixWif.contains(prefix) && !prefixWifComp.contains(prefix)) {

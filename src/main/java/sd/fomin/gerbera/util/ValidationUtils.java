@@ -17,7 +17,7 @@ public class ValidationUtils {
     }
 
     public static boolean isBech32(String string) {
-        return string.matches("^(bc1|tb1)[a-zA-HJ-NP-Z0-9]{25,39}$");
+        return string.matches("^(bc1|tb1|ltc1)[a-zA-HJ-NP-Z0-9]{25,39}$");
     }
 
     public static boolean isEmpty(String string) {
