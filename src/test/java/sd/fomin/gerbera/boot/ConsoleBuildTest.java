@@ -44,7 +44,7 @@ public class ConsoleBuildTest {
 
         BuildWrapper wrapper = new BuildWrapper();
 
-        wrapper.processLine("init mainnet");
+        wrapper.processLine("init mainnet BTC");
         wrapper.processLine("from 3722df3eff476fe31db8ae2b52806379bde58e9289026d10e425adc25c2e3f03 1     76a91491b24bf9f5288532960ac687abb035127b1d28a588ac 20     5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf");
         wrapper.processLine("rmfrom 1");
         wrapper.processLine("from fb8212db8c6c0509d1892115b0a73acfc3c30668a0f51dc80758cc479e29e67e 13    76a91491b24bf9f5288532960ac687abb035127b1d28a588ac 4040   5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf");
@@ -97,7 +97,7 @@ public class ConsoleBuildTest {
 
         BuildWrapper wrapper = new BuildWrapper();
 
-        wrapper.processLine("init testnet");
+        wrapper.processLine("init testnet BTC");
         wrapper.processLine("from b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f 1013  76a9141f594f74c37771ef1d3c73317411d84e52ed743188ac 60880  cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
         wrapper.processLine("rmfrom 1");
         wrapper.processLine("from b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f 1     76a9140af1ae78875d89840db368c013e9938468a493db88ac 20     93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX");
@@ -165,7 +165,7 @@ public class ConsoleBuildTest {
 
         BuildWrapper wrapper = new BuildWrapper();
 
-        wrapper.processLine("init testnet");
+        wrapper.processLine("init testnet BTC");
         wrapper.processLine("changeto 2MvrkztsxEdgMGbDSGVeGFx3tbE5Gre8ZtU");
         wrapper.processLine("from bafd902bbb6cc048600f2daac015013aec260b4f25dd1690f3f8d0f9e1c860d9 0 76a9140af1ae78875d89840db368c013e9938468a493db88ac 10000   93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX");
         wrapper.processLine("from 5a0c09d298e45dceafcf3865dfd2d6fe51ee04c7a43fb135faa53d9e5038fe1d 0 76a9141f594f74c37771ef1d3c73317411d84e52ed743188ac 100000  cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7");
@@ -210,7 +210,7 @@ public class ConsoleBuildTest {
 
         BuildWrapper wrapper = new BuildWrapper();
 
-        wrapper.processLine("init testnet");
+        wrapper.processLine("init testnet BTC");
         wrapper.processLine("from 868377909181158d7b46cc0418d915852df34d68adafe55e475b85ae71e9020c 1 a91453efc637f287f6ef92e2be6b4dd77846549f65c887 100000 cRFLf7mGxAwahwoYactPb9Y9qgK3txSWuG7ru5EqvGywcviZTGDv");
         wrapper.processLine("from 868377909181158d7b46cc0418d915852df34d68adafe55e475b85ae71e9020c 0 76a914e14eb9ffe68a71cbfeea8dadc94e27159dc9901988ac 100000 92R6MsUFVMqAT3SxBnjuhMxzjkLx2oYcKdxUcpBPQrPRA9KKaz7");
         wrapper.processLine("to mws6qvhiQpjumr6nWdZYeP8fjEzjzd8tAx 10000");
@@ -230,7 +230,7 @@ public class ConsoleBuildTest {
         BuildWrapper wrapper = new BuildWrapper();
         assertThat(wrapper.result.getTransaction()).isNull();
 
-        wrapper.processLine("init testnet");
+        wrapper.processLine("init testnet BTC");
         assertThat(wrapper.result.getTransaction()).isNull();
         wrapper.processLine("from bafd902bbb6cc048600f2daac015013aec260b4f25dd1690f3f8d0f9e1c860d9 0 76a9140af1ae78875d89840db368c013e9938468a493db88ac 10000   93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX");
         assertThat(wrapper.result.getTransaction()).isNull();
@@ -280,7 +280,7 @@ public class ConsoleBuildTest {
         wrapper.processLine("raw");
         assertThat(wrapper.result.getTransaction()).isNotNull();
 
-        wrapper.processLine("init testnet");
+        wrapper.processLine("init testnet BTC");
         assertThat(wrapper.result.getTransaction()).isNull();
     }
 }

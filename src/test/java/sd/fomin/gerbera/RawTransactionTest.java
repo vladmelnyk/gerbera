@@ -8,6 +8,7 @@ import sd.fomin.gerbera.types.Coin;
 import sd.fomin.gerbera.util.ApplicationRandom;
 
 import static org.assertj.core.api.Assertions.*;
+import static sd.fomin.gerbera.types.Coin.LTC;
 
 public class RawTransactionTest {
 
@@ -84,6 +85,37 @@ public class RawTransactionTest {
     }
 
     @Test
+    public void testFullMainnetLTC() {
+        String expectedRaw = "0100000001033f2e5cc2ad25e4106d0289928ee5bd796380522" +
+                "baeb81de36f47ff3edf2237010000006a4730440220080a8e8dbf870a" +
+                "060daad725e79a79700e6bcf7f282d98f837cc94ebdd58111f022075d73" +
+                "e237adc353e07f499de6f50d32c7a142ddddf126348d0aa0ad1bcdf30bf" +
+                "012102ca686617da4a3fd7a3a8863311541a2e162e5d8da90aac6d73667" +
+                "dd1befec119ffffffff0450c30000000000001600146a9a23662de8a1d" +
+                "b8c11c8730c9b03de1ef17bf61405000000000000160014a5205449ab6" +
+                "df718521cf72b0b311dd7f38decd650c3000000000000" +
+                "160014d8b83ad7bf8795b9ff61464fcf06f156c28e3e1f" +
+                "8ac8f802000000001976a9144747e8746cddb33b0f7f95a90f" +
+                "89f89fb387cbb688ac00000000";
+
+        TransactionBuilder builder = TransactionBuilder.create(true, LTC)
+                .from(
+                        "3722df3eff476fe31db8ae2b52806379bde58e9289026d10e425adc25c2e3f03",
+                        1,
+                        "76a91424e1ca9eda87e36cf4768bf9f08252e8fedb1d6a88ac",
+                        50000000,
+                        "TB6ioeJEF2qdXKpzPrPLkQuZRXiJzB1JWu2QmquNTj4gPU76gnxa"
+                )
+                .to("LUwcYGAm7nhZB3TrEpk3GknMokxa7DWkah", 50000)
+                .to("ltc1q55s9gjdtdhm3s5su7u4skvga6lecmmxkgg44tk", 1300)
+                .to("MTf4tP1TCNBn8dNkyxeBVoPrFCcVzxJvvh", 50000)
+                .withFee(40002)
+                .changeTo("17Vu7st1U1KwymUKU4jJheHHGRVNqrcfLD");
+
+        check(expectedRaw, builder);
+    }
+
+    @Test
     public void testFullTestnet() {
         String expectedRaw =
                 "01000000047fa41e3f7f2985eb88be91f7f0257cf6c7522258efa87f10cf883d" +
@@ -113,6 +145,73 @@ public class RawTransactionTest {
                         "1976a914b44b166f47b2a24712cc27fab9518686d32777fc88ac00000000";
 
         TransactionBuilder builder = TransactionBuilder.create(false, Coin.BTC)
+                .from(
+                        "b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f",
+                        1,
+                        "76a9140af1ae78875d89840db368c013e9938468a493db88ac",
+                        20,
+                        "93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX"
+                )
+                .from(
+                        "b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f",
+                        13,
+                        "76a9140af1ae78875d89840db368c013e9938468a493db88ac",
+                        4040,
+                        "93RmmDH1KBdXpnx4pQqrCJv1h6kKxF3K4FD7eCdXin12SsiVXSX"
+                )
+                .from(
+                        "b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f",
+                        1013,
+                        "76a9141f594f74c37771ef1d3c73317411d84e52ed743188ac",
+                        60880,
+                        "cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7"
+                )
+                .from(
+                        "7fa41e3f7f2985eb88be91f7f0257cf6c7522258efa87f10cf883d71e5a65ab9",
+                        20025,
+                        "76a9141f594f74c37771ef1d3c73317411d84e52ed743188ac",
+                        400128,
+                        "cViLa9BePFvF3wp3rGEc8v4z3zNEepyChKiUKCLEbPd7NqqtDoA7"
+                )
+                .to("muyUrFwhKH8EG7szasDbL1Ytsug9MvgLA4", 50000)
+                .to("mpdiUuo7vfU4hGkb2g9n6GPabHiMK3h7uw", 1300)
+                .to("2N8hwP1WmJrFF5QWABn38y63uYLhnJYJYTF", 50000)
+                .withFee(40002)
+                .changeTo("mwxFsmFviNnxAJngFBovrnvzYP8WMNiogW");
+
+        check(expectedRaw, builder);
+    }
+
+    @Test
+    public void testFullTestnetLtc() {
+        String expectedRaw =
+                "01000000047fa41e3f7f2985eb88be91f7f0257cf6c7522258efa87f10cf883d" +
+                        "71e5a65ab9010000008b483045022100832f9cba48483a812c1eeccb5e7d80d6" +
+                        "0bdb1425a19a3d24e18f9a10ba6c121302203a7a1b48f4b06fe902068001a034" +
+                        "6019d7755a13693f5866e15bb65588c6b456014104c1029aa08c5e72d09228d9" +
+                        "bb90ae48888a6955f79ec052753a81dfd049f39bb75f8b7142bf86c237a3a5e5" +
+                        "892358b5a9c6a393c47a0db5bf48d36859f1a68dc1ffffffff7fa41e3f7f2985" +
+                        "eb88be91f7f0257cf6c7522258efa87f10cf883d71e5a65ab90d0000008a4730" +
+                        "440220080a8e8dbf870a060daad725e79a79700e6bcf7f282d98f837cc94ebdd" +
+                        "58111f02203c26ca9b488a620b5f4825e8e80f5ae7150e7871300af9f50aeb51" +
+                        "1bb0a34e4f014104c1029aa08c5e72d09228d9bb90ae48888a6955f79ec05275" +
+                        "3a81dfd049f39bb75f8b7142bf86c237a3a5e5892358b5a9c6a393c47a0db5bf" +
+                        "48d36859f1a68dc1ffffffff7fa41e3f7f2985eb88be91f7f0257cf6c7522258" +
+                        "efa87f10cf883d71e5a65ab9f50300006a473044022030a84f1a9f6a02c4fc44" +
+                        "943220a3b4eb836790ef4db7a2422365f394437e7a00022067e92d9bbf9efe42" +
+                        "f246cdb103dac5b086aed85be181e4883ed2c76e97e87501012103c1029aa08c" +
+                        "5e72d09228d9bb90ae48888a6955f79ec052753a81dfd049f39bb7ffffffffb9" +
+                        "5aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f39" +
+                        "4e00006b483045022100f6ee8ec9f6ff414fa4d6c1813232d4edf5d90270cf2f" +
+                        "792ca56dfd3820468964022028f699410a0a28a1ce9456f342c1dd7e80768669" +
+                        "40bd5ccaf37361b3edf3c89d012103c1029aa08c5e72d09228d9bb90ae48888a" +
+                        "6955f79ec052753a81dfd049f39bb7ffffffff0450c30000000000001976a914" +
+                        "9e96150c26d90fb043e3a7bf2690cda1ff6c233388ac14050000000000001976" +
+                        "a9146400837067ff8bdc6458e1c7f35267a6acb9f97c88ac50c3000000000000" +
+                        "17a914a9974100aeee974a20cda9a2f545704a0ab54fdc87b6f0040000000000" +
+                        "1976a914b44b166f47b2a24712cc27fab9518686d32777fc88ac00000000";
+
+        TransactionBuilder builder = TransactionBuilder.create(false, LTC)
                 .from(
                         "b95aa6e5713d88cf107fa8ef582252c7f67c25f0f791be88eb85297f3f1ea47f",
                         1,

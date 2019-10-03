@@ -70,7 +70,7 @@ class RegularOutput extends Output {
             case LTC:
                 prefixP2PKH = mainNet ? singletonList('L') : asList('m', 'n');
                 prefixP2SH = singletonList(mainNet ? 'M' : '2');
-                prefixBech32 = mainNet ? asList('l', 'c') : asList('t', 'b');
+                prefixBech32 = mainNet ? asList('l', '1', 'c') : asList('t', 'b');
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + coin);
