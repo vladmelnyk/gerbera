@@ -2,6 +2,7 @@ package sd.fomin.gerbera.transaction;
 
 import org.junit.Test;
 import sd.fomin.gerbera.constant.ErrorMessages;
+import sd.fomin.gerbera.types.Coin;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,7 +33,7 @@ public class TransactionRegularOutputValidationTest {
 
     @Test
     public void testBech32TestnetDestination() {
-        assertNotNull(TransactionBuilder.create(false).to("tb1q3wrc5yq9c300jxlfeg7ae76tk9gsx044ucyg7a", 1));
+        assertNotNull(TransactionBuilder.create(false, Coin.BTC).to("tb1q3wrc5yq9c300jxlfeg7ae76tk9gsx044ucyg7a", 1));
     }
 
     @Test
@@ -52,7 +53,7 @@ public class TransactionRegularOutputValidationTest {
     @Test
     public void testIncorrectDestinationPrefixTestNet() {
         assertThatThrownBy(() -> {
-            TransactionBuilder.create(false).to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
+            TransactionBuilder.create(false, Coin.BTC).to("1NZUP3JAc9JkmbvmoTv7nVgZGtyJjirKV1", 1);
         })
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format(ErrorMessages.OUTPUT_ADDRESS_WRONG_PREFIX, "[m, n]", "[2]", "[t, b]"));
