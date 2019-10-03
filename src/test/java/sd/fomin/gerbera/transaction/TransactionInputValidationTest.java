@@ -2,6 +2,7 @@ package sd.fomin.gerbera.transaction;
 
 import org.junit.Test;
 import sd.fomin.gerbera.constant.ErrorMessages;
+import sd.fomin.gerbera.types.Coin;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -292,7 +293,7 @@ public class TransactionInputValidationTest {
     @Test
     public void testWrongChecksumWif() {
         assertThatThrownBy(() -> {
-            TransactionBuilder.create(false)
+            TransactionBuilder.create(false, Coin.BTC)
                     .from(
                             "0000000000000000000000000000000000000000000000000000000000000000",
                             1,
@@ -305,7 +306,7 @@ public class TransactionInputValidationTest {
     @Test
     public void testCorrectWithPKHScript() {
         assertThatCode(() -> {
-            TransactionBuilder.create(false)
+            TransactionBuilder.create(false, Coin.BTC)
                     .from(
                             "0000000000000000000000000000000000000000000000000000000000000000",
                             1,
@@ -318,7 +319,7 @@ public class TransactionInputValidationTest {
     @Test
     public void testCorrectWithP2SHScript() {
         assertThatCode(() -> {
-            TransactionBuilder.create(false)
+            TransactionBuilder.create(false, Coin.BTC)
                     .from(
                             "0000000000000000000000000000000000000000000000000000000000000000",
                             1,

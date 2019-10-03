@@ -2,6 +2,7 @@ package sd.fomin.gerbera.transaction;
 
 import sd.fomin.gerbera.constant.ErrorMessages;
 import sd.fomin.gerbera.constant.SigHashType;
+import sd.fomin.gerbera.types.Coin;
 import sd.fomin.gerbera.util.ByteBuffer;
 import sd.fomin.gerbera.types.UInt;
 import sd.fomin.gerbera.types.VarInt;
@@ -13,9 +14,6 @@ import java.util.List;
 
 public class TransactionBuilder {
 
-    private static final String DONATE_ADDRESS_MAINNET = "3Jyiwca9Gz8fD9LCCw5JnPaUciEtM6Fi7Z";
-    private static final String DONATE_ADDRESS_TESTNET = "mwC7PAhQWSHmjeVXuCwXaP28kjMmsr2LZk";
-
     private static final UInt VERSION = UInt.of(1);
     private static final byte SEGWIT_MARKER = (byte) 0x00;
     private static final byte SEGWIT_FLAG = (byte) 0x01;
@@ -23,6 +21,7 @@ public class TransactionBuilder {
     private static final Integer BTC_DUST_AMOUNT = 546;
 
     private final boolean mainNet;
+    private final Coin coin;
 
     private final List<Input> inputs = new LinkedList<>();
     private final List<Output> outputs = new LinkedList<>();
@@ -31,25 +30,26 @@ public class TransactionBuilder {
     private long fee;
     private long donate;
 
-    private TransactionBuilder(boolean mainNet) {
+    private TransactionBuilder(boolean mainNet, Coin coin) {
         this.mainNet = mainNet;
+        this.coin = coin;
     }
 
     public static TransactionBuilder create() {
-        return new TransactionBuilder(true);
+        return new TransactionBuilder(true, Coin.BTC);
     }
 
-    public static TransactionBuilder create(boolean mainNet) {
-        return new TransactionBuilder(mainNet);
+    public static TransactionBuilder create(boolean mainNet, Coin coin) {
+        return new TransactionBuilder(mainNet, coin);
     }
 
     public TransactionBuilder from(String fromTransactionBigEnd, int fromToutNumber, String closingScript, long satoshi, String wif) {
-        inputs.add(new Input(mainNet, fromTransactionBigEnd, fromToutNumber, closingScript, satoshi, wif));
+        inputs.add(new Input(mainNet, coin, fromTransactionBigEnd, fromToutNumber, closingScript, satoshi, wif));
         return this;
     }
 
     public TransactionBuilder from(String fromTransactionBigEnd, int fromToutNumber, String closingScript, long satoshi, String wif, Boolean replaceable) {
-        inputs.add(new Input(mainNet, fromTransactionBigEnd, fromToutNumber, closingScript, satoshi, wif, replaceable));
+        inputs.add(new Input(mainNet, coin, fromTransactionBigEnd, fromToutNumber, closingScript, satoshi, wif, replaceable));
         return this;
     }
 
@@ -63,7 +63,7 @@ public class TransactionBuilder {
     }
 
     public TransactionBuilder to(String address, long value) {
-        outputs.add(new RegularOutput(mainNet, value, address, OutputType.CUSTOM));
+        outputs.add(new RegularOutput(mainNet, coin, value, address, OutputType.CUSTOM));
         return this;
     }
 
@@ -114,14 +114,9 @@ public class TransactionBuilder {
 
         List<Output> buildOutputs = new LinkedList<>(outputs);
 
-        if (donate > 0) {
-            String donateAddress = mainNet ? DONATE_ADDRESS_MAINNET : DONATE_ADDRESS_TESTNET;
-            buildOutputs.add(new RegularOutput(mainNet, donate, donateAddress, OutputType.DONATE));
-        }
-
         long change = getChange();
         if (change >= BTC_DUST_AMOUNT) {
-            buildOutputs.add(new RegularOutput(mainNet, change, changeAddress, OutputType.CHANGE));
+            buildOutputs.add(new RegularOutput(mainNet, coin, change, changeAddress, OutputType.CHANGE));
         }
 
         if (buildOutputs.isEmpty()) {

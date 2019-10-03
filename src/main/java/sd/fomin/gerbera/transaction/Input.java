@@ -2,6 +2,7 @@ package sd.fomin.gerbera.transaction;
 
 import sd.fomin.gerbera.constant.ErrorMessages;
 import sd.fomin.gerbera.crypto.PrivateKey;
+import sd.fomin.gerbera.types.Coin;
 import sd.fomin.gerbera.types.OpSize;
 import sd.fomin.gerbera.types.UInt;
 import sd.fomin.gerbera.types.VarInt;
@@ -23,7 +24,7 @@ class Input {
     private final PrivateKey privateKey;
     private final UInt sequence;
 
-    Input(boolean mainNet, String transaction, int index, String lock, long satoshi, String wif) {
+    Input(boolean mainNet, Coin coin, String transaction, int index, String lock, long satoshi, String wif) {
         validateInputData(transaction, index, lock, satoshi, wif);
 
         this.transaction = transaction;
@@ -31,11 +32,11 @@ class Input {
         this.lock = lock;
         this.satoshi = satoshi;
         this.wif = wif;
-        this.privateKey = PrivateKey.ofWif(mainNet, wif);
+        this.privateKey = PrivateKey.ofWif(mainNet, coin, wif);
         this.sequence = SEQUENCE_IRREPLACEABLE;
     }
 
-    Input(boolean mainNet, String transaction, int index, String lock, long satoshi, String wif, Boolean replaceable) {
+    Input(boolean mainNet, Coin coin, String transaction, int index, String lock, long satoshi, String wif, Boolean replaceable) {
         validateInputData(transaction, index, lock, satoshi, wif);
 
         this.transaction = transaction;
@@ -43,7 +44,7 @@ class Input {
         this.lock = lock;
         this.satoshi = satoshi;
         this.wif = wif;
-        this.privateKey = PrivateKey.ofWif(mainNet, wif);
+        this.privateKey = PrivateKey.ofWif(mainNet, coin, wif);
         if (replaceable) {
             sequence = SEQUENCE_REPLACEABLE;
         } else {

@@ -1,9 +1,10 @@
 package sd.fomin.gerbera.crypto;
 
-import sd.fomin.gerbera.util.ByteBuffer;
-import sd.fomin.gerbera.util.Base58CheckUtils;
-import sd.fomin.gerbera.util.HexUtils;
+import sd.fomin.gerbera.types.Coin;
 import sd.fomin.gerbera.util.ApplicationRandom;
+import sd.fomin.gerbera.util.Base58CheckUtils;
+import sd.fomin.gerbera.util.ByteBuffer;
+import sd.fomin.gerbera.util.HexUtils;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -11,7 +12,8 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static sd.fomin.gerbera.crypto.Numbers.*;
+import static sd.fomin.gerbera.crypto.Numbers.N;
+import static sd.fomin.gerbera.crypto.Numbers.S_MAX;
 
 public class PrivateKey {
 
@@ -23,12 +25,22 @@ public class PrivateKey {
         this.compressed = compressed;
     }
 
-    public static PrivateKey ofWif(boolean mainNet, String wif) {
-        validateWifFormat(mainNet, wif);
+    public static PrivateKey ofWif(boolean mainNet, Coin coin, String wif) {
+        validateWifFormat(mainNet, coin, wif);
 
         boolean compressed = false;
 
-        byte prefix = mainNet ? (byte) 0x80 : (byte) 0xEF;
+        byte prefix;
+        switch (coin) {
+            case BTC:
+                prefix = mainNet ? (byte) 0x80 : (byte) 0xEF;
+                break;
+            case LTC:
+                prefix = mainNet ? (byte) 0xB0 : (byte) 0xEF;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + coin);
+        }
         byte[] decoded = Base58CheckUtils.decode(wif);
         if (decoded[0] != prefix) {
             throw new IllegalArgumentException("Decoded WIF must start with 0x" + HexUtils.asString(prefix) + " byte");
@@ -50,9 +62,22 @@ public class PrivateKey {
         return new PrivateKey(new BigInteger(HexUtils.asString(pkBytes), 16), compressed);
     }
 
-    private static void validateWifFormat(boolean mainNet, String wif) {
-        List<Character> prefixWif = singletonList(mainNet ? '5' : '9');
-        List<Character> prefixWifComp = mainNet ? asList('K', 'L') : singletonList('c');
+    private static void validateWifFormat(boolean mainNet, Coin coin, String wif) {
+        List<Character> prefixWif;
+        List<Character> prefixWifComp;
+        switch (coin) {
+            case BTC:
+                prefixWif = singletonList(mainNet ? '5' : '9');
+                prefixWifComp = mainNet ? asList('K', 'L') : singletonList('c');
+                break;
+            case LTC:
+                prefixWif = singletonList(mainNet ? '5' : '9');
+                prefixWifComp = mainNet ? singletonList('T') : singletonList('c');
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + coin);
+        }
+
         char prefix = wif.charAt(0);
 
         if (!prefixWif.contains(prefix) && !prefixWifComp.contains(prefix)) {
