@@ -39,6 +39,10 @@ public class TransactionBuilder {
         return new TransactionBuilder(true, Coin.BTC);
     }
 
+    public static TransactionBuilder create(boolean mainNet) {
+        return new TransactionBuilder(mainNet, Coin.BTC);
+    }
+
     public static TransactionBuilder create(boolean mainNet, Coin coin) {
         return new TransactionBuilder(mainNet, coin);
     }
