@@ -35,8 +35,8 @@ class RegularOutput extends Output {
     @Override
     protected byte[] getLockingScript() {
         return isBech32
-                ? ScriptPubKeyProducer.getInstance(mainNet, decodedAddress[0]).produceScript(decodedAddress)
-                : ScriptPubKeyProducer.getInstance(mainNet, decodedAddress[0])
+                ? ScriptPubKeyProducer.getInstance(mainNet, coin, decodedAddress[0]).produceScript(decodedAddress)
+                : ScriptPubKeyProducer.getInstance(mainNet, coin, decodedAddress[0])
                 .produceScript(Arrays.copyOfRange(decodedAddress, 1, decodedAddress.length));
     }
 

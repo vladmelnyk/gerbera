@@ -86,17 +86,15 @@ public class RawTransactionTest {
 
     @Test
     public void testFullMainnetLTC() {
-        String expectedRaw = "0100000001033f2e5cc2ad25e4106d0289928ee5bd796380522" +
-                "baeb81de36f47ff3edf2237010000006a4730440220080a8e8dbf870a" +
-                "060daad725e79a79700e6bcf7f282d98f837cc94ebdd58111f022075d73" +
-                "e237adc353e07f499de6f50d32c7a142ddddf126348d0aa0ad1bcdf30bf" +
-                "012102ca686617da4a3fd7a3a8863311541a2e162e5d8da90aac6d73667" +
-                "dd1befec119ffffffff0450c30000000000001600146a9a23662de8a1d" +
-                "b8c11c8730c9b03de1ef17bf61405000000000000160014a5205449ab6" +
-                "df718521cf72b0b311dd7f38decd650c3000000000000" +
-                "160014d8b83ad7bf8795b9ff61464fcf06f156c28e3e1f" +
-                "8ac8f802000000001976a9144747e8746cddb33b0f7f95a90f" +
-                "89f89fb387cbb688ac00000000";
+        String expectedRaw = "0100000001033f2e5cc2ad25e4106d0289928ee5bd796380522baeb8" +
+                "1de36f47ff3edf2237010000006b483045022100832f9cba48483a812c1ee" +
+                "ccb5e7d80d60bdb1425a19a3d24e18f9a10ba6c12130220308947bd0476b2d" +
+                "69583952cb0f6a3cf29de67c2744bdfcae1437c34d1c95994012102ca686617" +
+                "da4a3fd7a3a8863311541a2e162e5d8da90aac6d73667dd1befec119fffffff" +
+                "f0450c30000000000001976a9146a9a23662de8a1db8c11c8730c9b03de1ef17" +
+                "bf688ac1405000000000000160014a5205449ab6df718521cf72b0b311dd7f38d" +
+                "ecd650c300000000000017a914d8b83ad7bf8795b9ff61464fcf06f156c28e3e1" +
+                "f878ac8f802000000001600144747e8746cddb33b0f7f95a90f89f89fb387cbb600000000";
 
         TransactionBuilder builder = TransactionBuilder.create(true, LTC)
                 .from(
