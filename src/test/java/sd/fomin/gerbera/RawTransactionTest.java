@@ -86,15 +86,16 @@ public class RawTransactionTest {
 
     @Test
     public void testFullMainnetLTC() {
-        String expectedRaw = "0100000001033f2e5cc2ad25e4106d0289928ee5bd796380522baeb8" +
-                "1de36f47ff3edf2237010000006b483045022100832f9cba48483a812c1ee" +
-                "ccb5e7d80d60bdb1425a19a3d24e18f9a10ba6c12130220308947bd0476b2d" +
-                "69583952cb0f6a3cf29de67c2744bdfcae1437c34d1c95994012102ca686617" +
-                "da4a3fd7a3a8863311541a2e162e5d8da90aac6d73667dd1befec119fffffff" +
-                "f0450c30000000000001976a9146a9a23662de8a1db8c11c8730c9b03de1ef17" +
-                "bf688ac1405000000000000160014a5205449ab6df718521cf72b0b311dd7f38d" +
-                "ecd650c300000000000017a914d8b83ad7bf8795b9ff61464fcf06f156c28e3e1" +
-                "f878ac8f802000000001600144747e8746cddb33b0f7f95a90f89f89fb387cbb600000000";
+        String expectedRaw = "0100000001033f2e5cc2ad25e4106d0289928ee5bd796380522baeb81de" +
+                "36f47ff3edf2237010000006a4730440220080a8e8dbf870a060daad725" +
+                "e79a79700e6bcf7f282d98f837cc94ebdd58111f02200948d3f7ea30ac0c2" +
+                "454f10a2c39cbdc9fdb2f9a13f426e0b82cc6a526782223012102ca686617da" +
+                "4a3fd7a3a8863311541a2e162e5d8da90aac6d73667dd1befec119ffffffff0" +
+                "550c30000000000001976a9146a9a23662de8a1db8c11c8730c9b03de1ef17bf" +
+                "688ac1405000000000000160014a5205449ab6df718521cf72b0b311dd7f38de" +
+                "cd6780500000000000017a914d8b83ad7bf8795b9ff61464fcf06f156c28e3e1f87" +
+                "50c300000000000017a914d8b83ad7bf8795b9ff61464fcf06f156c28e3e1f8712c" +
+                "3f802000000001600144747e8746cddb33b0f7f95a90f89f89fb387cbb600000000";
 
         TransactionBuilder builder = TransactionBuilder.create(true, LTC)
                 .from(
@@ -106,6 +107,7 @@ public class RawTransactionTest {
                 )
                 .to("LUwcYGAm7nhZB3TrEpk3GknMokxa7DWkah", 50000)
                 .to("ltc1q55s9gjdtdhm3s5su7u4skvga6lecmmxkgg44tk", 1300)
+                .to("3MSvaVbVFFLML86rt5eqgA9SvW23upaXdY", 1400)
                 .to("MTf4tP1TCNBn8dNkyxeBVoPrFCcVzxJvvh", 50000)
                 .withFee(40002)
                 .changeTo("17Vu7st1U1KwymUKU4jJheHHGRVNqrcfLD");

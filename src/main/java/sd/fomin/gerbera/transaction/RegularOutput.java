@@ -69,7 +69,7 @@ class RegularOutput extends Output {
                 break;
             case LTC:
                 prefixP2PKH = mainNet ? singletonList('L') : asList('m', 'n');
-                prefixP2SH = singletonList(mainNet ? 'M' : '2');
+                prefixP2SH = mainNet ? asList('M', '3') : singletonList('2');
                 prefixBech32 = mainNet ? asList('l', '1', 'c') : asList('t', 'b');
                 break;
             default:
