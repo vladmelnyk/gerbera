@@ -71,7 +71,7 @@ public class PrivateKey {
                 prefixWifComp = mainNet ? asList('K', 'L') : singletonList('c');
                 break;
             case LTC:
-                prefixWif = singletonList(mainNet ? '5' : '9');
+                prefixWif = mainNet ? asList('5', '6') : singletonList('9');
                 prefixWifComp = mainNet ? singletonList('T') : singletonList('c');
                 break;
             default:

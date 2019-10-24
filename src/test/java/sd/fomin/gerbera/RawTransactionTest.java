@@ -116,6 +116,41 @@ public class RawTransactionTest {
     }
 
     @Test
+    public void testFullMainnetSegwitLTC() {
+        String expectedRaw = "0100000001033f2e5cc2ad25e4106d0289928ee5bd796" +
+                "380522baeb81de36f47ff3edf2237010000008b48304502" +
+                "2100832f9cba48483a812c1eeccb5e7d80d60bdb1425a19a3d24" +
+                "e18f9a10ba6c1213022033a5c83053715c2c9ad50d56d23dc6c8c" +
+                "7fb8a8f0f2d0eaaa4749982720f8223014104c4d1539ea1cb421a" +
+                "51b18364def4ac59e21aa02341ab0cdea10029412cb8f426ff231" +
+                "62a6bd1280d9de736db0b29529a4f28edb0651ca4357ccc4322db" +
+                "1e21d5ffffffff0550c30000000000001976a9146a9a23662de8a" +
+                "1db8c11c8730c9b03de1ef17bf688ac1405000000000000160014" +
+                "a5205449ab6df718521cf72b0b311dd7f38decd67805000000000" +
+                "00017a914d8b83ad7bf8795b9ff61464fcf06f156c28e3e1f8750" +
+                "c300000000000017a914d8b83ad7bf8795b9ff61464fcf06f156c28e" +
+                "3e1f8712c3f802000000001600144747e8746cddb33b0f7f95a90f89f" +
+                "89fb387cbb600000000";
+
+        TransactionBuilder builder = TransactionBuilder.create(true, LTC)
+                .from(
+                        "3722df3eff476fe31db8ae2b52806379bde58e9289026d10e425adc25c2e3f03",
+                        1,
+                        "76a91424e1ca9eda87e36cf4768bf9f08252e8fedb1d6a88ac",
+                        50000000,
+                        "6uARcR5xsVDtaKCzuKRwz33roDLF2LqQuzNDZEy3gSPfaHoZyvc"
+                )
+                .to("LUwcYGAm7nhZB3TrEpk3GknMokxa7DWkah", 50000)
+                .to("ltc1q55s9gjdtdhm3s5su7u4skvga6lecmmxkgg44tk", 1300)
+                .to("3MSvaVbVFFLML86rt5eqgA9SvW23upaXdY", 1400)
+                .to("MTf4tP1TCNBn8dNkyxeBVoPrFCcVzxJvvh", 50000)
+                .withFee(40002)
+                .changeTo("17Vu7st1U1KwymUKU4jJheHHGRVNqrcfLD");
+
+        check(expectedRaw, builder);
+    }
+
+    @Test
     public void testFullTestnet() {
         String expectedRaw =
                 "01000000047fa41e3f7f2985eb88be91f7f0257cf6c7522258efa87f10cf883d" +
