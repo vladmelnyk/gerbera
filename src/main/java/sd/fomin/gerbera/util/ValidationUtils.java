@@ -31,6 +31,10 @@ public class ValidationUtils {
             case BTC:
                 prefixList = asList("bc1", "tb1");
                 break;
+            case BCH:
+//                TODO: revisit later
+                prefixList = singletonList("bitcoincash:q");
+                break;
             case LTC:
                 prefixList = singletonList("ltc1");
                 break;

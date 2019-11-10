@@ -33,6 +33,7 @@ public class PrivateKey {
         byte prefix;
         switch (coin) {
             case BTC:
+            case BCH:
                 prefix = mainNet ? (byte) 0x80 : (byte) 0xEF;
                 break;
             case LTC:
@@ -67,6 +68,7 @@ public class PrivateKey {
         List<Character> prefixWifComp;
         switch (coin) {
             case BTC:
+            case BCH:
                 prefixWif = singletonList(mainNet ? '5' : '9');
                 prefixWifComp = mainNet ? asList('K', 'L') : singletonList('c');
                 break;

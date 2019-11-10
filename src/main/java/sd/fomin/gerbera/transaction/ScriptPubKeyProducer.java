@@ -22,6 +22,7 @@ public interface ScriptPubKeyProducer {
 
         switch (coin) {
             case BTC:
+            case BCH:
                 prefixesP2PKHMainnet = singletonList((byte) 0x00);
                 prefixesP2PKHTestnet = singletonList((byte) 0x6F);
                 prefixesP2SHMainnet = singletonList((byte) 0x05);

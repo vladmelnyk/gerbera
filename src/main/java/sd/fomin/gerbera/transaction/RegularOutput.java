@@ -63,6 +63,8 @@ class RegularOutput extends Output {
         List<Character> prefixBech32;
         switch (coin) {
             case BTC:
+//                TODO: revisit later
+            case BCH:
                 prefixP2PKH = mainNet ? singletonList('1') : asList('m', 'n');
                 prefixP2SH = singletonList(mainNet ? '3' : '2');
                 prefixBech32 = mainNet ? asList('b', 'c') : asList('t', 'b');
